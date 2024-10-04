@@ -5,5 +5,5 @@
 - [Mabel Consueto](https://github.com/Mabelycv)
 - [Flor Ramirez](https://github.com/FlorDRamirez)
 - [Elena Craciun](https://github.com/AprendizElena)
-- [Sara Malliana](https://github.com/SaraMalliana)
+- [Sara Pérez-Malliana](https://github.com/SaraMalliana)
 - [Diego Gerwig](https://github.com/diegogerwig)
