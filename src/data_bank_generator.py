@@ -4,7 +4,7 @@ import numpy as np
 import csv
 import os
 from pathlib import Path
-from config import (
+from data_bank_profiles_config import (
     perfiles_ingreso,
     categorias_trx
 )
@@ -150,5 +150,5 @@ def save_to_csv(transactions):
     print(f"Transacciones guardadas en: {filepath}")
 
 if __name__ == "__main__":
-    transactions = gen_transactions("Altos ingresos", datetime.datetime(2024, 4, 1))
+    transactions = gen_transactions("Altos ingresos", datetime.datetime(2022, 1, 1))
     print(transactions)
