@@ -1,6 +1,9 @@
 import random
 import datetime
 import numpy as np
+import csv
+import os
+from pathlib import Path
 from config import (
     perfiles_ingreso,
     categorias_trx
@@ -119,7 +122,33 @@ def gen_transactions(perfil:str, desde:datetime.datetime, hasta:datetime.datetim
             cambio_mes = True
         current_date = new_date
 
+    # Guardar en CSV
+    save_to_csv(transactions)
+
     return transactions
 
+def save_to_csv(transactions):
+    """
+    Guarda las transacciones en un archivo CSV en la carpeta /data
+    """
+    # Crear la carpeta /data si no existe
+    data_folder = Path(__file__).parent.parent / "data"
+    data_folder.mkdir(parents=True, exist_ok=True)
+
+    # Generar el nombre del archivo
+    timestamp = datetime.datetime.now().strftime("%Y_%m_%d__%H_%M")
+    filename = f"data_bank_trx_{timestamp}.csv"
+    filepath = data_folder / filename
+
+    # Escribir las transacciones en el archivo CSV
+    with open(filepath, mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.DictWriter(file, fieldnames=transactions[0].keys())
+        writer.writeheader()
+        for transaction in transactions:
+            writer.writerow(transaction)
+
+    print(f"Transacciones guardadas en: {filepath}")
+
 if __name__ == "__main__":
-    print(gen_transactions("Altos ingresos", datetime.datetime(2024, 4, 1)))
+    transactions = gen_transactions("Altos ingresos", datetime.datetime(2024, 4, 1))
+    print(transactions)

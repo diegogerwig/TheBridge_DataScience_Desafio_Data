@@ -29,28 +29,55 @@ perfiles_ingreso = {
     }
 }
 
-perfil_consumos = [
-    {
-        "anual" : [
-            "impuestos",
-            "seguros"
+perfil_consumos = {
+    "anual" : [
+        {"concepto": "impuestos", "rango": (200, 5000)},
+        {"concepto": "seguros", "rango": (100, 2000)}
+    ],
+    "mensual" : {
+        "servicios_basicos": [
+            {"concepto": "agua", "rango": (10, 80)},
+            {"concepto": "luz", "rango": (20, 150)},
+            {"concepto": "gas", "rango": (15, 100)},
+            {"concepto": "internet", "rango": (30, 80)},
+            {"concepto": "telefonía", "rango": (20, 100)}
         ],
-        "mensual" : {
-            "agua" : (10, 30),
-            "luz" : (10, 50),
-            "comunicación" : (30, 80)
-        },
-        "otros": [
-            "gasolina"
+        "vivienda": [
+            {"concepto": "alquiler", "rango": (300, 1500)},
+            {"concepto": "hipoteca", "rango": (400, 2000)},
+            {"concepto": "mantenimiento", "rango": (50, 300)}
         ]
-
-    }
-]
+    },
+    "frecuentes": [
+        {"concepto": "alimentación", "rango": (100, 800), "frecuencia": 0.9},
+        {"concepto": "transporte", "rango": (20, 200), "frecuencia": 0.8},
+        {"concepto": "ocio", "rango": (10, 300), "frecuencia": 0.6},
+        {"concepto": "ropa", "rango": (30, 500), "frecuencia": 0.4},
+        {"concepto": "salud", "rango": (20, 400), "frecuencia": 0.3},
+        {"concepto": "educación", "rango": (50, 1000), "frecuencia": 0.2}
+    ],
+    "ocasionales": [
+        {"concepto": "viajes", "rango": (200, 3000), "frecuencia": 0.1},
+        {"concepto": "electrodomésticos", "rango": (100, 2000), "frecuencia": 0.05},
+        {"concepto": "reparaciones", "rango": (50, 1000), "frecuencia": 0.15},
+        {"concepto": "regalos", "rango": (20, 500), "frecuencia": 0.2}
+    ]
+}
 
 categorias_trx = [
     'Alimentación',
-    'Entretenimiento',
-    'Básicos', 
-    'Ocio',
-    'Transporte'
+    'Vivienda',
+    'Transporte',
+    'Servicios básicos',
+    'Ocio y entretenimiento',
+    'Salud',
+    'Educación',
+    'Ropa y accesorios',
+    'Tecnología',
+    'Ahorro e inversión',
+    'Deudas y préstamos',
+    'Donaciones y caridad',
+    'Mascotas',
+    'Cuidado personal',
+    'Subscripciones'
 ]
