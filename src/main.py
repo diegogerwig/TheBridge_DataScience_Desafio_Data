@@ -6,7 +6,6 @@ from config import (
     categorias_trx
 )
 from faker import Faker
-from utils import get_nomina
 
 from fastapi import FastAPI, HTTPException
 
@@ -46,7 +45,7 @@ def gen_transactions(perfil:str, desde:datetime.datetime, hasta:datetime.datetim
     datos_perfil = perfiles_ingreso[perfil]
 
     # Generamos datos que serán estables durante el periodo
-    trans_nomina = get_nomina(datos_perfil)
+    trans_nomina = random.uniform(datos_perfil["nomina"][0], datos_perfil["nomina"][1])
     balance = random.uniform(
         datos_perfil['initial_balance_range'][0],
         datos_perfil['initial_balance_range'][1]
