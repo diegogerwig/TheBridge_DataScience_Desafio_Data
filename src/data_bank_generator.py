@@ -11,11 +11,20 @@ from data_bank_profiles_config import (
 )
 from faker import Faker
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import JSONResponse
+from enum import Enum
+from datetime import datetime
+from typing import List
+
 
 app = FastAPI()
 fake = Faker(['es_ES'])
+
+class IncomeProfile(str, Enum):
+    low = "Low income"
+    average = "Average income"
+    high = "High income"
 
 # List of municipalities in the Basque Country
 cities = [
