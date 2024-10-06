@@ -1,83 +1,109 @@
 """
-Configuraciones de nuestro sistema de generación de transacciones    
+Configurations for our transaction generation system    
 """
 
-perfiles_ingreso = {
-    'Bajos ingresos': 
+income_profiles = {
+    'Low income': 
     {
-        'nomina' : (500, 1500),
+        'salary' : (500, 1500),
         'initial_balance_range': (100, 1000),
         'transaction_range': (10, 500),
         'transaction_weights': [0.4, 0.4, 0.2],
-        'transaction_frequency': 3
+        'transaction_frequency': 3,
+        'children': 0,
+        'owns_house': False,
+        'has_car': False,
+        'has_pet': False,
+        'has_partner': False,
+        'partner_works': False
     },
-    'Ingresos promedio' : 
+    'Average income' : 
     {
-        'nomina' : (1000, 2000),
+        'salary' : (1000, 2000),
         'initial_balance_range': (1000, 10000),
         'transaction_range': (50, 2000),
         'transaction_weights': [0.3, 0.3, 0.4],
-        'transaction_frequency': 5
+        'transaction_frequency': 5,
+        'children': 1,
+        'owns_house': False,
+        'has_car': True,
+        'has_pet': True,
+        'has_partner': True,
+        'partner_works': True
     },
-    'Altos ingresos': 
+    'High income': 
     {
-        'nomina' : (2500, 4000),
+        'salary' : (2500, 4000),
         'initial_balance_range': (10000, 100000),
         'transaction_range': (100, 10000),
         'transaction_weights': [0.2, 0.2, 0.6],
-        'transaction_frequency': 7
+        'transaction_frequency': 7,
+        'children': 2,
+        'owns_house': True,
+        'has_car': True,
+        'has_pet': True,
+        'has_partner': True,
+        'partner_works': True
     }
 }
 
-perfil_consumos = {
-    "anual" : [
-        {"concepto": "impuestos", "rango": (200, 5000)},
-        {"concepto": "seguros", "rango": (100, 2000)}
+consumption_profile = {
+    "annual" : [
+        {"concept": "taxes", "range": (200, 5000)},
+        {"concept": "insurance", "range": (100, 2000)}
     ],
-    "mensual" : {
-        "servicios_basicos": [
-            {"concepto": "agua", "rango": (10, 80)},
-            {"concepto": "luz", "rango": (20, 150)},
-            {"concepto": "gas", "rango": (15, 100)},
-            {"concepto": "internet", "rango": (30, 80)},
-            {"concepto": "telefonía", "rango": (20, 100)}
+    "monthly" : {
+        "basic_services": [
+            {"concept": "water", "range": (10, 80)},
+            {"concept": "electricity", "range": (20, 150)},
+            {"concept": "gas", "range": (15, 100)},
+            {"concept": "internet", "range": (30, 80)},
+            {"concept": "phone", "range": (20, 100)}
         ],
-        "vivienda": [
-            {"concepto": "alquiler", "rango": (300, 1500)},
-            {"concepto": "hipoteca", "rango": (400, 2000)},
-            {"concepto": "mantenimiento", "rango": (50, 300)}
+        "housing": [
+            {"concept": "rent", "range": (300, 1500)},
+            {"concept": "mortgage", "range": (400, 2000)},
+            {"concept": "maintenance", "range": (50, 300)}
         ]
     },
-    "frecuentes": [
-        {"concepto": "alimentación", "rango": (100, 800), "frecuencia": 0.9},
-        {"concepto": "transporte", "rango": (20, 200), "frecuencia": 0.8},
-        {"concepto": "ocio", "rango": (10, 300), "frecuencia": 0.6},
-        {"concepto": "ropa", "rango": (30, 500), "frecuencia": 0.4},
-        {"concepto": "salud", "rango": (20, 400), "frecuencia": 0.3},
-        {"concepto": "educación", "rango": (50, 1000), "frecuencia": 0.2}
+    "frequent": [
+        {"concept": "food", "range": (100, 800), "frequency": 0.9},
+        {"concept": "transport", "range": (20, 200), "frequency": 0.8},
+        {"concept": "leisure", "range": (10, 300), "frequency": 0.6},
+        {"concept": "clothing", "range": (30, 500), "frequency": 0.4},
+        {"concept": "healthcare", "range": (20, 400), "frequency": 0.3},
+        {"concept": "education", "range": (50, 1000), "frequency": 0.2}
     ],
-    "ocasionales": [
-        {"concepto": "viajes", "rango": (200, 3000), "frecuencia": 0.1},
-        {"concepto": "electrodomésticos", "rango": (100, 2000), "frecuencia": 0.05},
-        {"concepto": "reparaciones", "rango": (50, 1000), "frecuencia": 0.15},
-        {"concepto": "regalos", "rango": (20, 500), "frecuencia": 0.2}
+    "occasional": [
+        {"concept": "travel", "range": (200, 3000), "frequency": 0.1},
+        {"concept": "appliances", "range": (100, 2000), "frequency": 0.05},
+        {"concept": "repairs", "range": (50, 1000), "frequency": 0.15},
+        {"concept": "gifts", "range": (20, 500), "frequency": 0.2}
+    ],
+    "conditional": [
+        {"concept": "children", "range": (50, 500), "frequency": 0.5, "multiplier": 1.5},
+        {"concept": "car", "range": (30, 300), "frequency": 0.4},
+        {"concept": "pet", "range": (20, 200), "frequency": 0.3}
     ]
 }
 
-categorias_trx = [
-    'Alimentación',
-    'Vivienda',
-    'Transporte',
-    'Servicios básicos',
-    'Ocio y entretenimiento',
-    'Salud',
-    'Educación',
-    'Ropa y accesorios',
-    'Tecnología',
-    'Ahorro e inversión',
-    'Deudas y préstamos',
-    'Donaciones y caridad',
-    'Mascotas',
-    'Cuidado personal',
-    'Subscripciones'
+transaction_categories = [
+    'Food',
+    'Housing',
+    'Transport',
+    'Basic services',
+    'Leisure and entertainment',
+    'Healthcare',
+    'Education',
+    'Clothing and accessories',
+    'Technology',
+    'Savings and investment',
+    'Debts and loans',
+    'Donations and charity',
+    'Pets',
+    'Personal care',
+    'Subscriptions',
+    'Minor expenses',
+    'Children expenses',
+    'Car expenses'
 ]
