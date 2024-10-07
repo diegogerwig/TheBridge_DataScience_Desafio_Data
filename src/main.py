@@ -28,3 +28,5 @@ if __name__ == "__main__":
     print(f"✅ Generated {data['transaction_count']} transactions")
     print(f"✅ CSV  file saved at: {csv_dir}/{csv_filename}")
     print(f"✅ JSON file saved at: {json_relative_path}")
+
+    print("\n🚀 Done!")
