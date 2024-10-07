@@ -107,16 +107,3 @@ transaction_categories = [
     'Children expenses',
     'Car expenses'
 ]
-
-# List of municipalities in the Basque Country
-cities = [
-    # Bizkaia
-    "Bilbao", "Barakaldo", "Getxo", "Portugalete", "Santurtzi", "Basauri", "Leioa", 
-    "Galdakao", "Sestao", "Durango", "Erandio", "Bermeo", "Mungia", "Sopela", "Berango",
-    # Gipuzkoa
-    "San Sebastian", "Irun", "Errenteria", "Eibar", "Zarautz", "Arrasate/Mondragon", 
-    "Hernani", "Lasarte-Oria", "Hondarribia", "Pasaia", "Andoain",
-    # Araba
-    "Vitoria-Gasteiz", "Llodio", "Amurrio", "Salvatierra/Agurain", "Oyón-Oion", 
-    "Iruña de Oca", "Alegría-Dulantzi", "Zuia", "Labastida/Bastida", "Elciego"
-]

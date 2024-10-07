@@ -1,5 +1,5 @@
 """
-Configurations for our transaction generation system    
+Configurations for our transaction generation system
 """
 
 income_profiles = {
@@ -108,15 +108,14 @@ transaction_categories = [
     'Car expenses'
 ]
 
-# List of municipalities in the Basque Country
 cities = [
-    # Bizkaia
+	#Bizkaia
     "Bilbao", "Barakaldo", "Getxo", "Portugalete", "Santurtzi", "Basauri", "Leioa", 
     "Galdakao", "Sestao", "Durango", "Erandio", "Bermeo", "Mungia", "Sopela", "Berango",
-    # Gipuzkoa
+	#Gipuzkoa
     "San Sebastian", "Irun", "Errenteria", "Eibar", "Zarautz", "Arrasate/Mondragon", 
     "Hernani", "Lasarte-Oria", "Hondarribia", "Pasaia", "Andoain",
-    # Araba
+	#Araba
     "Vitoria-Gasteiz", "Llodio", "Amurrio", "Salvatierra/Agurain", "Oyón-Oion", 
     "Iruña de Oca", "Alegría-Dulantzi", "Zuia", "Labastida/Bastida", "Elciego"
 ]

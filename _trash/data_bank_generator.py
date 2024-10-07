@@ -1,4 +1,5 @@
 import random
+import datetime
 import numpy as np
 import csv
 import json
@@ -6,15 +7,14 @@ from pathlib import Path
 from data_bank_profiles_config import (
     income_profiles,
     transaction_categories,
-    consumption_profile,
-    cities
+    consumption_profile
 )
 from faker import Faker
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import JSONResponse
 from enum import Enum
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import List
 
 
@@ -26,6 +26,15 @@ class IncomeProfile(str, Enum):
     average = "Average income"
     high = "High income"
 
+# List of municipalities in the Basque Country
+cities = [
+    "Bilbao", "Barakaldo", "Getxo", "Portugalete", "Santurtzi", "Basauri", "Leioa", 
+    "Galdakao", "Sestao", "Durango", "Erandio", "Bermeo", "Mungia", "Sopela", "Berango",
+    "San Sebastian", "Irun", "Errenteria", "Eibar", "Zarautz", "Arrasate/Mondragon", 
+    "Hernani", "Lasarte-Oria", "Hondarribia", "Pasaia", "Andoain",
+    "Vitoria-Gasteiz", "Llodio", "Amurrio", "Salvatierra/Agurain", "Oyón-Oion", 
+    "Iruña de Oca", "Alegría-Dulantzi", "Zuia", "Labastida/Bastida", "Elciego"
+]
 
 def generate_timestamp(date):
     """Generates a timestamp with a random hour, preferably during daytime"""
@@ -47,7 +56,7 @@ def read_root():
     """API entry point"""
     return "Welcome to the Bank Transaction Generation API!"
 
-def generate_transactions(profile:str, from_date:datetime):
+def generate_transactions(profile:str, from_date:datetime.datetime):
     """Generates transactions based on the indicated profile"""
     if profile not in income_profiles:
         raise ValueError("Unknown profile")
@@ -67,7 +76,7 @@ def generate_transactions(profile:str, from_date:datetime):
         profile_data['initial_balance_range'][1]
     ))
 
-    to_date = datetime.now()
+    to_date = datetime.datetime.now()
 
     idx = 1
     transactions = []
@@ -223,8 +232,72 @@ def generate_transactions(profile:str, from_date:datetime):
                 transactions.append(transaction)
                 idx += 1
 
-        # Advance to the next day
-        current_date += timedelta(days=1)
+        # Conditional expenses based on profile attributes
+        for category in consumption_profile["conditional"]:
+            if category["concept"] == "children":
+                if profile_data['children'] > 0 and random.random() < (category["frequency"] / 30):
+                    timestamp = generate_timestamp(current_date)
+                    transaction_amount = round_to_cents(random.uniform(*category["range"]) * profile_data['children'] * category["multiplier"])
+                    balance -= transaction_amount
+                    transaction_ref_id = f"TXN-{fake.unique.random_number(digits=8)}-{idx}"
+                    transaction = {
+                        'profile': profile,
+                        'customer': customer_name,
+                        'account': account_name,
+                        'transaction_ref_id': transaction_ref_id,
+                        'timestamp': timestamp.isoformat(),
+                        'city': "Bilbao" if random.random() < 0.8 else random.choice(cities),
+                        'transaction_type': "Expense",
+                        'transaction_category': "Children expenses",
+                        'amount_eur': -transaction_amount,
+                        'balance': balance
+                    }
+                    transactions.append(transaction)
+                    idx += 1
+            elif (category["concept"] == "car" and profile_data['has_car']) or \
+                 (category["concept"] == "pet" and profile_data['has_pet']):
+                if random.random() < (category["frequency"] / 30):
+                    timestamp = generate_timestamp(current_date)
+                    transaction_amount = round_to_cents(random.uniform(*category["range"]))
+                    balance -= transaction_amount
+                    transaction_ref_id = f"TXN-{fake.unique.random_number(digits=8)}-{idx}"
+                    transaction = {
+                        'profile': profile,
+                        'customer': customer_name,
+                        'account': account_name,
+                        'transaction_ref_id': transaction_ref_id,
+                        'timestamp': timestamp.isoformat(),
+                        'city': "Bilbao" if random.random() < 0.8 else random.choice(cities),
+                        'transaction_type': "Expense",
+                        'transaction_category': f"{category['concept'].capitalize()} expenses",
+                        'amount_eur': -transaction_amount,
+                        'balance': balance
+                    }
+                    transactions.append(transaction)
+                    idx += 1
+
+        # Minor daily expenses
+        if random.random() < 0.7:  # 70% chance of minor expense each day
+            timestamp = generate_timestamp(current_date)
+            minor_expense = round_to_cents(random.uniform(3, 10))
+            balance -= minor_expense
+            transaction_ref_id = f"TXN-{fake.unique.random_number(digits=8)}-{idx}"
+            transaction = {
+                'profile': profile,
+                'customer': customer_name,
+                'account': account_name,
+                'transaction_ref_id': transaction_ref_id,
+                'timestamp': timestamp.isoformat(),
+                'city': "Bilbao" if random.random() < 0.8 else random.choice(cities),
+                'transaction_type': "Expense",
+                'transaction_category': "Minor expenses",
+                'amount_eur': -minor_expense,
+                'balance': balance
+            }
+            transactions.append(transaction)
+            idx += 1
+
+        current_date += datetime.timedelta(days=1)
 
     # Sort transactions by timestamp
     transactions.sort(key=lambda x: x['timestamp'])
@@ -242,7 +315,7 @@ def generate_transactions(profile:str, from_date:datetime):
 def gen_transactions(profile:str, from_date:str):
     """API endpoint for generating transactions"""
     try:
-        from_date = datetime.strptime(from_date, "%Y-%m-%d")
+        from_date = datetime.datetime.strptime(from_date, "%Y-%m-%d")
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
 
@@ -257,7 +330,7 @@ def save_to_csv(transactions):
     data_folder = Path(__file__).parent.parent / "data"
     data_folder.mkdir(parents=True, exist_ok=True)
 
-    timestamp = datetime.now().strftime("%Y_%m_%d__%H_%M")
+    timestamp = datetime.datetime.now().strftime("%Y_%m_%d__%H_%M")
     filename = f"data_bank_trx_{timestamp}.csv"
     filepath = data_folder / filename
 
@@ -276,7 +349,7 @@ def save_to_csv(transactions):
 if __name__ == "__main__":
     start_date = "2022-01-01"
     profile = "High income"
-    data = generate_transactions(profile, datetime.strptime(start_date, "%Y-%m-%d"))
+    data = generate_transactions(profile, datetime.datetime.strptime(start_date, "%Y-%m-%d"))
     
     for transaction in data['transactions'][:]:
         print(json.dumps(transaction, indent=2))
@@ -284,7 +357,7 @@ if __name__ == "__main__":
     # Save transactions to a JSON file
     json_folder = Path(__file__).parent.parent / "data"
     json_folder.mkdir(parents=True, exist_ok=True)
-    json_filename = f"data_bank_trx_{datetime.now().strftime('%Y_%m_%d__%H_%M')}.json"
+    json_filename = f"data_bank_trx_{datetime.datetime.now().strftime('%Y_%m_%d__%H_%M')}.json"
     json_filepath = json_folder / json_filename
     
     with open(json_filepath, 'w', encoding='utf-8') as f:
