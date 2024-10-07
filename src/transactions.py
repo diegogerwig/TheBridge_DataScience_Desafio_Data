@@ -1,7 +1,7 @@
 import random
 from datetime import datetime, timedelta
 from faker import Faker
-from utils import generate_timestamp, round_to_cents, save_to_csv
+from utils import generate_timestamp, round_to_cents
 from config import income_profiles, consumption_profile, cities
 
 fake = Faker(['es_ES'])
@@ -42,7 +42,6 @@ def generate_transactions(profile: str, from_date: datetime):
             balance += salary
             transaction_ref_id = f"TXN-{fake.unique.random_number(digits=8)}-{idx}"
             transaction = {
-                'profile': profile,
                 'customer': customer_name,
                 'account': account_name,
                 'transaction_ref_id': transaction_ref_id,
@@ -60,7 +59,6 @@ def generate_transactions(profile: str, from_date: datetime):
                 balance += partner_salary
                 transaction_ref_id = f"TXN-{fake.unique.random_number(digits=8)}-{idx}"
                 transaction = {
-                    'profile': profile,
                     'customer': customer_name,
                     'account': account_name,
                     'transaction_ref_id': transaction_ref_id,
@@ -80,7 +78,6 @@ def generate_transactions(profile: str, from_date: datetime):
                 balance += extra_income_amount
                 transaction_ref_id = f"TXN-{fake.unique.random_number(digits=8)}-{idx}"
                 transaction = {
-                    'profile': profile,
                     'customer': customer_name,
                     'account': account_name,
                     'transaction_ref_id': transaction_ref_id,
@@ -101,7 +98,6 @@ def generate_transactions(profile: str, from_date: datetime):
                 balance += bonus
                 transaction_ref_id = f"TXN-{fake.unique.random_number(digits=8)}-{idx}"
                 transaction = {
-                    'profile': profile,
                     'customer': customer_name,
                     'account': account_name,
                     'transaction_ref_id': transaction_ref_id,
@@ -121,7 +117,6 @@ def generate_transactions(profile: str, from_date: datetime):
             balance -= housing_expense
             transaction_ref_id = f"TXN-{fake.unique.random_number(digits=8)}-{idx}"
             transaction = {
-                'profile': profile,
                 'customer': customer_name,
                 'account': account_name,
                 'transaction_ref_id': transaction_ref_id,
@@ -144,7 +139,6 @@ def generate_transactions(profile: str, from_date: datetime):
                     balance -= bill_amount
                     transaction_ref_id = f"TXN-{fake.unique.random_number(digits=8)}-{idx}"
                     transaction = {
-                        'profile': profile,
                         'customer': customer_name,
                         'account': account_name,
                         'transaction_ref_id': transaction_ref_id,
@@ -166,7 +160,6 @@ def generate_transactions(profile: str, from_date: datetime):
                 balance -= transaction_amount
                 transaction_ref_id = f"TXN-{fake.unique.random_number(digits=8)}-{idx}"
                 transaction = {
-                    'profile': profile,
                     'customer': customer_name,
                     'account': account_name,
                     'transaction_ref_id': transaction_ref_id,
@@ -185,10 +178,7 @@ def generate_transactions(profile: str, from_date: datetime):
 
     transactions.sort(key=lambda x: x['timestamp'])
 
-    csv_path = save_to_csv(transactions)
-
     return {
         "transactions": transactions,
-        "csv_path": str(csv_path),
         "transaction_count": len(transactions)
     }
