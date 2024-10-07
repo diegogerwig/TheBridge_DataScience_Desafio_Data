@@ -15,12 +15,10 @@ def generate_timestamp(date):
 def round_to_cents(amount):
     return round(amount, 2)
 
-def save_to_csv(transactions):
+def save_to_csv(transactions, filename):
     data_folder = Path(__file__).parent.parent / "data"
     data_folder.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now().strftime("%Y_%m_%d__%H_%M")
-    filename = f"data_bank_trx_{timestamp}.csv"
-    filepath = data_folder / filename
+    filepath = data_folder / f"{filename}.csv"
 
     fieldnames = ['profile', 'customer', 'account', 'transaction_ref_id', 'timestamp', 'city',
                   'transaction_type', 'transaction_category', 'amount_eur', 'balance']
