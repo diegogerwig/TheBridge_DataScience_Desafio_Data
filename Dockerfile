@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 
 EXPOSE 8000
 
-CMD ["fastapi", "run", "src/data_bank_generator.py"]
+CMD ["fastapi", "run", "src/api.py"]
