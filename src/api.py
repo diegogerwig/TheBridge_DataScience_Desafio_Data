@@ -10,7 +10,16 @@ def read_root():
     return "Welcome to the Bank Transaction Generation API!"
 
 @app.get("/transactions")
-def gen_transactions(profile: str, from_date: str):
+def gen_transactions(
+    profile: str = Query(..., description="Income profile: 'Low income', 'Average income', or 'High income'"), 
+    from_date: str = Query(..., description="Start date in the format YYYY-MM-DD")
+):
+    """
+    Generate bank transactions based on the user's profile and date.
+
+    - **profile**: Select an income profile (`Low income`, `Average income`, or `High income`).
+    - **from_date**: Start date for generating transactions in `YYYY-MM-DD` format.
+    """
     try:
         from_date = datetime.strptime(from_date, "%Y-%m-%d")
     except ValueError:
