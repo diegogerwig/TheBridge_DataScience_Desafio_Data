@@ -1,4 +1,4 @@
-from transactions import generate_transactions
+from trx_generator import generate_trxs
 from datetime import datetime
 import json
 from collections import OrderedDict
@@ -6,35 +6,35 @@ from pathlib import Path
 from config import buyer_profiles
 from utils import save_to_csv
 
-def order_transaction(transaction, profile_name, profile_data):
+def order_trx(trx, profile_name, profile_data):
     # Crear un diccionario ordenado con el orden de los campos correcto
     return OrderedDict([
         ('profile', profile_name),
         ('name', profile_data['name']),
         ('age', profile_data['age']),
         ('iban', profile_data['iban']),
-        ('trx_id', transaction['trx_id']),
-        ('timestamp', transaction['timestamp']),
-        ('city', transaction['city']),
-        ('transaction_type', transaction['transaction_type']),
-        ('transaction_category', transaction['transaction_category']),
-        ('amount_eur', transaction['amount_eur']),
-        ('balance', transaction['balance'])
+        ('trx_id', trx['trx_id']),
+        ('timestamp', trx['timestamp']),
+        ('city', trx['city']),
+        ('trx_type', trx['trx_type']),
+        ('trx_cat', trx['trx_cat']),
+        ('amount_eur', trx['amount_eur']),
+        ('balance', trx['balance'])
     ])
 
 if __name__ == "__main__":
     start_date = "2020-01-01"
-    all_transactions = []
+    all_trxs = []
     
     for profile_name, profile_data in buyer_profiles.items():
         print(f"\nGenerating data for {profile_name} profile...")
-        data = generate_transactions(profile_data, datetime.strptime(start_date, "%Y-%m-%d"))
+        data = generate_trxs(profile_data, datetime.strptime(start_date, "%Y-%m-%d"))
         
-        for transaction in data['transactions']:
-            ordered_transaction = order_transaction(transaction, profile_name, profile_data)
-            all_transactions.append(ordered_transaction)
+        for trx in data['trxs']:
+            ordered_trx = order_trx(trx, profile_name, profile_data)
+            all_trxs.append(ordered_trx)
         
-        print(f"✅ Generated {data['transaction_count']} transactions for {profile_name}")
+        print(f"✅ Generated {data['trx_count']} trxs for {profile_name}")
 
     # Crear carpeta de datos
     project_root = Path(__file__).resolve().parent.parent
@@ -49,22 +49,22 @@ if __name__ == "__main__":
     json_filename = f"{filename}.json"
     json_filepath = data_folder / json_filename
     with open(json_filepath, 'w', encoding='utf-8') as f:
-        json.dump(all_transactions, f, ensure_ascii=False, indent=2)
+        json.dump(all_trxs, f, ensure_ascii=False, indent=2)
     
     # Guardar todas las transacciones en un archivo CSV utilizando la función utilitaria
-    csv_filepath = save_to_csv(all_transactions, filename)
+    csv_filepath = save_to_csv(all_trxs, filename)
 
     # Imprimir información sobre los archivos guardados
     try:
         json_relative_path = json_filepath.relative_to(project_root)
         csv_relative_path = Path(csv_filepath).relative_to(project_root)
         
-        print(f"\n✅ Total transactions generated: {len(all_transactions)}")
+        print(f"\n✅ Total trxs generated: {len(all_trxs)}")
         print(f"✅ JSON file saved at: {json_relative_path}")
         print(f"✅ CSV  file saved at: {csv_relative_path}")
     except ValueError as e:
         print(f"\n❌ Error calculating relative paths: {e}")
-        print(f"✅ Total transactions generated: {len(all_transactions)}")
+        print(f"✅ Total trxs generated: {len(all_trxs)}")
         print(f"✅ JSON file saved at: {json_filepath}")
         print(f"✅ CSV  file saved at: {csv_filepath}")
 

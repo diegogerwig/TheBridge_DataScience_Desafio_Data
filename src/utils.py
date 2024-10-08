@@ -15,21 +15,21 @@ def generate_timestamp(date):
 def round_to_cents(amount):
     return round(amount, 2)
 
-def save_to_csv(transactions, filename):
+def save_to_csv(trxs, filename):
     data_folder = Path(__file__).resolve().parent.parent / "data"
     data_folder.mkdir(parents=True, exist_ok=True)
     filepath = data_folder / f"{filename}.csv"
 
     fieldnames = ['profile', 'name', 'age', 'iban', 'trx_id', 'timestamp', 'city',
-                  'transaction_type', 'transaction_category', 'amount_eur', 'balance']
+                  'trx_type', 'trx_cat', 'amount_eur', 'balance']
 
     with open(filepath, mode='w', newline='', encoding='utf-8') as file:
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
-        for transaction in transactions:
-            if 'balance' in transaction:
-                transaction['balance'] = round(transaction['balance'], 2)
-            row = {field: transaction.get(field, '') for field in fieldnames}
+        for trx in trxs:
+            if 'balance' in trx:
+                trx['balance'] = round(trx['balance'], 2)
+            row = {field: trx.get(field, '') for field in fieldnames}
             writer.writerow(row)
 
     return str(filepath.resolve())

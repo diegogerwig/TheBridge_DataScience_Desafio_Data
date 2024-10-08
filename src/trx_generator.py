@@ -6,10 +6,10 @@ from config import buyer_profiles, consumption_profile, cities
 
 fake = Faker(['es_ES'])
 
-def generate_transactions(profile_data: dict, from_date: datetime):
+def generate_trxs(profile_data: dict, from_date: datetime):
     customer_name = profile_data['name']
     account_name = profile_data['iban']
-    transaction_city = profile_data['city']
+    trx_city = profile_data['city']
 
     salary = round_to_cents(random.uniform(profile_data["salary"][0], profile_data["salary"][1]))
     partner_salary = 0
@@ -24,7 +24,7 @@ def generate_transactions(profile_data: dict, from_date: datetime):
     to_date = datetime.now()
 
     idx = 1
-    transactions = []
+    trxs = []
     current_date = from_date
     housing_expense = round_to_cents(random.uniform(*consumption_profile["monthly"]["housing"][1 if profile_data['owns_house'] else 0]["range"]))
 
@@ -37,35 +37,35 @@ def generate_transactions(profile_data: dict, from_date: datetime):
             timestamp = generate_timestamp(current_date)
             balance += salary
             trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
-            transaction = {
+            trx = {
                 'customer': customer_name,
                 'account': account_name,
                 'trx_id': trx_id,
                 'timestamp': timestamp.isoformat(),
-                'city': transaction_city,
-                'transaction_type': "transfer",
-                'transaction_category': "Salary",
+                'city': trx_city,
+                'trx_type': "transfer",
+                'trx_cat': "Salary",
                 'amount_eur': salary,
                 'balance': balance
             }
-            transactions.append(transaction)
+            trxs.append(trx)
             idx += 1
 
             if partner_salary > 0:
                 balance += partner_salary
                 trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
-                transaction = {
+                trx = {
                     'customer': customer_name,
                     'account': account_name,
                     'trx_id': trx_id,
                     'timestamp': timestamp.isoformat(),
-                    'city': transaction_city,
-                    'transaction_type': "transfer",
-                    'transaction_category': "Partner Salary",
+                    'city': trx_city,
+                    'trx_type': "transfer",
+                    'trx_cat': "Partner Salary",
                     'amount_eur': partner_salary,
                     'balance': balance
                 }
-                transactions.append(transaction)
+                trxs.append(trx)
                 idx += 1
 
             # Extra income every 2-3 months
@@ -73,18 +73,18 @@ def generate_transactions(profile_data: dict, from_date: datetime):
             if months_since_last_extra_income >= random.randint(2, 3):
                 balance += extra_income_amount
                 trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
-                transaction = {
+                trx = {
                     'customer': customer_name,
                     'account': account_name,
                     'trx_id': trx_id,
                     'timestamp': timestamp.isoformat(),
-                    'city': transaction_city,
-                    'transaction_type': "transfer",
-                    'transaction_category': "Extra Income",
+                    'city': trx_city,
+                    'trx_type': "transfer",
+                    'trx_cat': "Extra Income",
                     'amount_eur': extra_income_amount,
                     'balance': balance
                 }
-                transactions.append(transaction)
+                trxs.append(trx)
                 idx += 1
                 months_since_last_extra_income = 0
 
@@ -93,18 +93,18 @@ def generate_transactions(profile_data: dict, from_date: datetime):
                 bonus = round_to_cents(random.uniform(0.9 * salary, 1.1 * salary))
                 balance += bonus
                 trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
-                transaction = {
+                trx = {
                     'customer': customer_name,
                     'account': account_name,
                     'trx_id': trx_id,
                     'timestamp': timestamp.isoformat(),
-                    'city': transaction_city,
-                    'transaction_type': "transfer",
-                    'transaction_category': "Bonus",
+                    'city': trx_city,
+                    'trx_type': "transfer",
+                    'trx_cat': "Bonus",
                     'amount_eur': bonus,
                     'balance': balance
                 }
-                transactions.append(transaction)
+                trxs.append(trx)
                 idx += 1
 
         # Rent or Mortgage (5th of each month)
@@ -112,18 +112,18 @@ def generate_transactions(profile_data: dict, from_date: datetime):
             timestamp = generate_timestamp(current_date)
             balance -= housing_expense
             trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
-            transaction = {
+            trx = {
                 'customer': customer_name,
                 'account': account_name,
                 'trx_id': trx_id,
                 'timestamp': timestamp.isoformat(),
-                'city': transaction_city,
-                'transaction_type': "Housing",
-                'transaction_category': "Mortgage" if profile_data['owns_house'] else "Rent",
+                'city': trx_city,
+                'trx_type': "Housing",
+                'trx_cat': "Mortgage" if profile_data['owns_house'] else "Rent",
                 'amount_eur': -housing_expense,
                 'balance': balance
             }
-            transactions.append(transaction)
+            trxs.append(trx)
             idx += 1
 
         # Utility bills (5th, 6th, or 7th of each month)
@@ -134,48 +134,48 @@ def generate_transactions(profile_data: dict, from_date: datetime):
                     bill_amount = round_to_cents(random.uniform(*service["range"]))
                     balance -= bill_amount
                     trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
-                    transaction = {
+                    trx = {
                         'customer': customer_name,
                         'account': account_name,
                         'trx_id': trx_id,
                         'timestamp': timestamp.isoformat(),
-                        'city': transaction_city,
-                        'transaction_type': "Basic services",
-                        'transaction_category': service["concept"],
+                        'city': trx_city,
+                        'trx_type': "Basic services",
+                        'trx_cat': service["concept"],
                         'amount_eur': -bill_amount,
                         'balance': balance
                     }
-                    transactions.append(transaction)
+                    trxs.append(trx)
                     idx += 1
 
-        # Other transactions based on frequency
+        # Other trxs based on frequency
         for category in consumption_profile["frequent"] + consumption_profile["occasional"]:
             if random.random() < (category["frequency"] / 30):  # Adjust frequency to daily probability
                 timestamp = generate_timestamp(current_date)
-                transaction_amount = round_to_cents(random.uniform(*category["range"]))
-                balance -= transaction_amount
+                trx_amount = round_to_cents(random.uniform(*category["range"]))
+                balance -= trx_amount
                 balance = round_to_cents(balance)
                 trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
-                transaction = {
+                trx = {
                     'customer': customer_name,
                     'account': account_name,
                     'trx_id': trx_id,
                     'timestamp': timestamp.isoformat(),
-                    'city': transaction_city if random.random() < 0.8 else random.choice(cities),
-                    'transaction_type': "Expense",
-                    'transaction_category': category["concept"],
-                    'amount_eur': -transaction_amount,
+                    'city': trx_city if random.random() < 0.8 else random.choice(cities),
+                    'trx_type': "Expense",
+                    'trx_cat': category["concept"],
+                    'amount_eur': -trx_amount,
                     'balance': balance
                 }
-                transactions.append(transaction)
+                trxs.append(trx)
                 idx += 1
 
         # Advance to the next day
         current_date += timedelta(days=1)
 
-    transactions.sort(key=lambda x: x['trx_id'])
+    trxs.sort(key=lambda x: x['trx_id'])
 
     return {
-        "transactions": transactions,
-        "transaction_count": len(transactions)
+        "trxs": trxs,
+        "trx_count": len(trxs)
     }
