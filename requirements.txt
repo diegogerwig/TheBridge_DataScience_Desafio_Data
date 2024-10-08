@@ -1,4 +1,3 @@
 pandas
 faker
 fastapi[standard]
-papermill

@@ -23,7 +23,7 @@ def order_trx(trx, profile_name, profile_data):
     ])
 
 if __name__ == "__main__":
-    start_date = "2020-01-01"
+    start_date = "2022-01-01"
     all_trxs = []
     
     for profile_name, profile_data in buyer_profiles.items():
