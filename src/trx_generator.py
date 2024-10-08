@@ -166,7 +166,7 @@ def generate_trxs(profile_data: dict, from_date: datetime):
                     trx_city if random.random() < 0.8 else random.choice(cities),
                     idx, 
                     timestamp, 
-                    "Expense", 
+                    "expenses", 
                     trx_category, 
                     -trx_amount, 
                     balance
