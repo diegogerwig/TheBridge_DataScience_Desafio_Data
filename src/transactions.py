@@ -2,18 +2,14 @@ import random
 from datetime import datetime, timedelta
 from faker import Faker
 from utils import generate_timestamp, round_to_cents
-from config import income_profiles, consumption_profile, cities
+from config import buyer_profiles, consumption_profile, cities
 
 fake = Faker(['es_ES'])
 
-def generate_transactions(profile: str, from_date: datetime):
-    if profile not in income_profiles:
-        raise ValueError("Unknown profile")
-
-    profile_data = income_profiles[profile]
-    customer_name = fake.name()
-    account_name = fake.iban()
-    transaction_city = "Bilbao"
+def generate_transactions(profile_data: dict, from_date: datetime):
+    customer_name = profile_data['name']
+    account_name = profile_data['iban']
+    transaction_city = profile_data['city']
 
     salary = round_to_cents(random.uniform(profile_data["salary"][0], profile_data["salary"][1]))
     partner_salary = 0
@@ -40,11 +36,11 @@ def generate_transactions(profile: str, from_date: datetime):
         if current_date.day == 1:
             timestamp = generate_timestamp(current_date)
             balance += salary
-            transaction_ref_id = f"TXN-{fake.unique.random_number(digits=8)}-{idx}"
+            trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
             transaction = {
                 'customer': customer_name,
                 'account': account_name,
-                'transaction_ref_id': transaction_ref_id,
+                'trx_id': trx_id,
                 'timestamp': timestamp.isoformat(),
                 'city': transaction_city,
                 'transaction_type': "transfer",
@@ -57,11 +53,11 @@ def generate_transactions(profile: str, from_date: datetime):
 
             if partner_salary > 0:
                 balance += partner_salary
-                transaction_ref_id = f"TXN-{fake.unique.random_number(digits=8)}-{idx}"
+                trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
                 transaction = {
                     'customer': customer_name,
                     'account': account_name,
-                    'transaction_ref_id': transaction_ref_id,
+                    'trx_id': trx_id,
                     'timestamp': timestamp.isoformat(),
                     'city': transaction_city,
                     'transaction_type': "transfer",
@@ -76,11 +72,11 @@ def generate_transactions(profile: str, from_date: datetime):
             months_since_last_extra_income += 1
             if months_since_last_extra_income >= random.randint(2, 3):
                 balance += extra_income_amount
-                transaction_ref_id = f"TXN-{fake.unique.random_number(digits=8)}-{idx}"
+                trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
                 transaction = {
                     'customer': customer_name,
                     'account': account_name,
-                    'transaction_ref_id': transaction_ref_id,
+                    'trx_id': trx_id,
                     'timestamp': timestamp.isoformat(),
                     'city': transaction_city,
                     'transaction_type': "transfer",
@@ -96,11 +92,11 @@ def generate_transactions(profile: str, from_date: datetime):
             if current_date.month in [6, 12]:
                 bonus = round_to_cents(random.uniform(0.9 * salary, 1.1 * salary))
                 balance += bonus
-                transaction_ref_id = f"TXN-{fake.unique.random_number(digits=8)}-{idx}"
+                trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
                 transaction = {
                     'customer': customer_name,
                     'account': account_name,
-                    'transaction_ref_id': transaction_ref_id,
+                    'trx_id': trx_id,
                     'timestamp': timestamp.isoformat(),
                     'city': transaction_city,
                     'transaction_type': "transfer",
@@ -115,13 +111,13 @@ def generate_transactions(profile: str, from_date: datetime):
         if current_date.day == 5:
             timestamp = generate_timestamp(current_date)
             balance -= housing_expense
-            transaction_ref_id = f"TXN-{fake.unique.random_number(digits=8)}-{idx}"
+            trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
             transaction = {
                 'customer': customer_name,
                 'account': account_name,
-                'transaction_ref_id': transaction_ref_id,
+                'trx_id': trx_id,
                 'timestamp': timestamp.isoformat(),
-                'city': "Bilbao",
+                'city': transaction_city,
                 'transaction_type': "Housing",
                 'transaction_category': "Mortgage" if profile_data['owns_house'] else "Rent",
                 'amount_eur': -housing_expense,
@@ -137,13 +133,13 @@ def generate_transactions(profile: str, from_date: datetime):
                     timestamp = generate_timestamp(current_date)
                     bill_amount = round_to_cents(random.uniform(*service["range"]))
                     balance -= bill_amount
-                    transaction_ref_id = f"TXN-{fake.unique.random_number(digits=8)}-{idx}"
+                    trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
                     transaction = {
                         'customer': customer_name,
                         'account': account_name,
-                        'transaction_ref_id': transaction_ref_id,
+                        'trx_id': trx_id,
                         'timestamp': timestamp.isoformat(),
-                        'city': "Bilbao",
+                        'city': transaction_city,
                         'transaction_type': "Basic services",
                         'transaction_category': service["concept"],
                         'amount_eur': -bill_amount,
@@ -158,13 +154,14 @@ def generate_transactions(profile: str, from_date: datetime):
                 timestamp = generate_timestamp(current_date)
                 transaction_amount = round_to_cents(random.uniform(*category["range"]))
                 balance -= transaction_amount
-                transaction_ref_id = f"TXN-{fake.unique.random_number(digits=8)}-{idx}"
+                balance = round_to_cents(balance)
+                trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
                 transaction = {
                     'customer': customer_name,
                     'account': account_name,
-                    'transaction_ref_id': transaction_ref_id,
+                    'trx_id': trx_id,
                     'timestamp': timestamp.isoformat(),
-                    'city': "Bilbao" if random.random() < 0.8 else random.choice(cities),
+                    'city': transaction_city if random.random() < 0.8 else random.choice(cities),
                     'transaction_type': "Expense",
                     'transaction_category': category["concept"],
                     'amount_eur': -transaction_amount,
@@ -176,7 +173,7 @@ def generate_transactions(profile: str, from_date: datetime):
         # Advance to the next day
         current_date += timedelta(days=1)
 
-    transactions.sort(key=lambda x: x['timestamp'])
+    transactions.sort(key=lambda x: x['trx_id'])
 
     return {
         "transactions": transactions,
