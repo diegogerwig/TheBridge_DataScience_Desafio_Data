@@ -161,7 +161,7 @@ consumption_profile = {
         "housing": [
             {"concept": "rent", "range": (300, 1500)},
             {"concept": "mortgage", "range": (400, 2000)},
-            {"concept": "maintenance", "range": (50, 300)}
+            # {"concept": "maintenance", "range": (50, 300)}
         ]
     },
     "frequent": [
