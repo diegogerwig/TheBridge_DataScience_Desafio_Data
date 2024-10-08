@@ -12,13 +12,13 @@ def read_root():
 
 @app.get("/transactions")
 def gen_transactions(
-    profile: str = Query(..., description="Income profile: 'buyer_1', 'buyer_2', 'buyer_3', etc."), 
+    profile: str = Query(..., description="Income profile: 'buyer_1', 'buyer_2', ..., 'buyer_8'."), 
     from_date: str = Query(..., description="Start date in the format YYYY-MM-DD")
 ):
     """
     Generate bank transactions based on the user's profile and date.
 
-    - **profile**: Select a buyer profile ('buyer_1', 'buyer_2', 'buyer_3', etc.).
+    - **profile**: Select a buyer profile ('buyer_1', 'buyer_2', ..., 'buyer_8').
     - **from_date**: Start date for generating transactions in `YYYY-MM-DD` format.
     """
     try:
@@ -27,7 +27,7 @@ def gen_transactions(
         raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
 
     if profile not in buyer_profiles:
-        raise HTTPException(status_code=400, detail="Invalid profile. Choose from 'buyer_1', 'buyer_2', 'buyer_3', etc.")
+        raise HTTPException(status_code=400, detail="Invalid profile. Choose from 'buyer_1', 'buyer_2', ..., 'buyer_8'.")
 
     profile_data = buyer_profiles[profile]
     data = generate_trxs(profile_data, from_date)
