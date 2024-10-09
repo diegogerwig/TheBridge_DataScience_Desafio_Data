@@ -6,6 +6,7 @@ from config import buyer_profiles
 from trx_generator import generate_trxs
 from utils import generate_spanish_dni, generate_email, generate_password
 
+
 def generate_data():
     users = []
     transactions = []
@@ -46,9 +47,11 @@ def generate_data():
 
     return users, transactions
 
+
 def save_json(data, filename):
     with open(filename, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+
 
 def save_csv(users, transactions, filename):
     with open(filename, 'w', newline='', encoding='utf-8') as f:
@@ -71,21 +74,26 @@ def save_csv(users, transactions, filename):
                     '', '', ''
                 ])
 
+
 if __name__ == "__main__":
     users, transactions = generate_data()
 
-    project_root = Path(__file__).resolve().parent
+    # Crear carpeta de datos fuera de src
+    project_root = Path(__file__).resolve().parent.parent
     data_folder = project_root / "data"
     data_folder.mkdir(exist_ok=True)
 
+    # Guardar archivos JSON
     users_json_path = data_folder / "userInsert.json"
     transactions_json_path = data_folder / "transactionInsert.json"
     save_json(users, users_json_path)
     save_json(transactions, transactions_json_path)
 
-    csv_path = data_folder / "all_data.csv"
+    # Guardar archivo CSV
+    csv_path = data_folder / "data_bank_trx.csv"
     save_csv(users, transactions, csv_path)
 
+    # Generar output final
     try:
         users_json_relative_path = users_json_path.relative_to(project_root)
         transactions_json_relative_path = transactions_json_path.relative_to(project_root)
@@ -105,4 +113,3 @@ if __name__ == "__main__":
         print(f"✅ CSV file saved at: {csv_path}")
 
     print("\n🚀 Done generating data!")
-

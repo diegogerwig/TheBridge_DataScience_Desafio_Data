@@ -1,0 +1,98 @@
+[
+  {
+    "profile": "buyer_1",
+    "name": "Luis",
+    "surname": "",
+    "birth_date": "1996-08-10",
+    "dni": "15368783E",
+    "email": "luis.@awesomecode.com",
+    "password": "187113",
+    "city": "Bilbao",
+    "iban": "ES55209562978274598712",
+    "balance": -101327.46999999993
+  },
+  {
+    "profile": "buyer_2",
+    "name": "Carmen",
+    "surname": "",
+    "birth_date": "1984-09-05",
+    "dni": "21883438L",
+    "email": "carmen.@brilliantpixel.tech",
+    "password": "757873",
+    "city": "Zarautz",
+    "iban": "ES21209548915012662590",
+    "balance": -103107.85999999993
+  },
+  {
+    "profile": "buyer_3",
+    "name": "Ana",
+    "surname": "",
+    "birth_date": "1989-08-23",
+    "dni": "60232064D",
+    "email": "ana.@extremedata.site",
+    "password": "328245",
+    "city": "Amurrio",
+    "iban": "ES36209517876272634023",
+    "balance": 95260.82999999996
+  },
+  {
+    "profile": "buyer_4",
+    "name": "Jorge",
+    "surname": "",
+    "birth_date": "1974-05-23",
+    "dni": "00482800F",
+    "email": "jorge.@hyperweb.site",
+    "password": "422566",
+    "city": "Galdakao",
+    "iban": "ES03209542878603723302",
+    "balance": -91814.33999999994
+  },
+  {
+    "profile": "buyer_5",
+    "name": "Sara",
+    "surname": "",
+    "birth_date": "1994-03-12",
+    "dni": "67782580Q",
+    "email": "sara.@smartweb.org",
+    "password": "062063",
+    "city": "Donostia",
+    "iban": "ES91209564624501274653",
+    "balance": 48591.81
+  },
+  {
+    "profile": "buyer_6",
+    "name": "Manuel",
+    "surname": "",
+    "birth_date": "1979-02-14",
+    "dni": "00515553P",
+    "email": "manuel.@brilliantpixel.site",
+    "password": "800803",
+    "city": "Vitoria-Gasteiz",
+    "iban": "ES88209556622986678501",
+    "balance": -52721.52000000003
+  },
+  {
+    "profile": "buyer_7",
+    "name": "María",
+    "surname": "",
+    "birth_date": "1968-12-31",
+    "dni": "06872241W",
+    "email": "maría.@brilliantdata.com",
+    "password": "921600",
+    "city": "Portugalete",
+    "iban": "ES20209517885519888654",
+    "balance": -109214.11999999997
+  },
+  {
+    "profile": "buyer_8",
+    "name": "Antonio",
+    "surname": "",
+    "birth_date": "1979-04-04",
+    "dni": "31084788N",
+    "email": "antonio.@coolapp.co",
+    "password": "390599",
+    "city": "Labastida",
+    "iban": "ES55209535506606400827",
+    "balance": -16360.489999999987
+  }
+]
