@@ -1,7 +1,7 @@
 import random
-from datetime import datetime
 from pathlib import Path
 import csv
+
 
 def generate_timestamp(date):
     if random.random() < 0.85:
@@ -12,8 +12,10 @@ def generate_timestamp(date):
     second = random.randint(0, 59)
     return date.replace(hour=hour, minute=minute, second=second)
 
+
 def round_to_cents(amount):
     return round(amount, 2)
+
 
 def save_to_csv(trxs, filename):
     data_folder = Path(__file__).resolve().parent.parent / "data"
@@ -34,6 +36,7 @@ def save_to_csv(trxs, filename):
 
     return str(filepath.resolve())
 
+
 def calculate_iban_control_digits(bank_code, branch_code, account_number):
     
     iban = f"{bank_code}{branch_code}{account_number}142800"
@@ -46,6 +49,7 @@ def calculate_iban_control_digits(bank_code, branch_code, account_number):
     
     return f"{control_digits:02d}"
 
+
 def generate_spanish_dni():
     numbers = ''.join([str(random.randint(0, 9)) for _ in range(8)])
     
@@ -55,3 +59,11 @@ def generate_spanish_dni():
     dni = numbers + control_letter
     
     return dni
+
+
+def generate_password(length):
+    digits = '0123456789'
+    
+    password = ''.join(random.choice(digits) for _ in range(length))
+    
+    return password
