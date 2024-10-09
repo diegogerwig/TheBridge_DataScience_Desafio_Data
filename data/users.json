@@ -1,0 +1,98 @@
+[
+  {
+    "profile": "buyer_1",
+    "name": "Luis",
+    "surname": "",
+    "birth_date": "1996-08-10",
+    "dni": "23811625R",
+    "email": "luis.@example.com",
+    "password": "36429607",
+    "city": "Bilbao",
+    "iban": "ES96209577854567490127",
+    "balance": -55764.22000000015
+  },
+  {
+    "profile": "buyer_2",
+    "name": "Carmen",
+    "surname": "",
+    "birth_date": "1984-09-05",
+    "dni": "30564082A",
+    "email": "carmen.@example.com",
+    "password": "86620878",
+    "city": "Zarautz",
+    "iban": "ES70209576140699909639",
+    "balance": -91911.62000000002
+  },
+  {
+    "profile": "buyer_3",
+    "name": "Ana",
+    "surname": "",
+    "birth_date": "1989-08-23",
+    "dni": "82891897N",
+    "email": "ana.@example.com",
+    "password": "06117088",
+    "city": "Amurrio",
+    "iban": "ES86209558366692200767",
+    "balance": 121775.88000000015
+  },
+  {
+    "profile": "buyer_4",
+    "name": "Jorge",
+    "surname": "",
+    "birth_date": "1974-05-23",
+    "dni": "21059962N",
+    "email": "jorge.@example.com",
+    "password": "89218234",
+    "city": "Galdakao",
+    "iban": "ES50209551526208906144",
+    "balance": -93573.68000000012
+  },
+  {
+    "profile": "buyer_5",
+    "name": "Sara",
+    "surname": "",
+    "birth_date": "1994-03-12",
+    "dni": "54781636Y",
+    "email": "sara.@example.com",
+    "password": "61399116",
+    "city": "Donostia",
+    "iban": "ES44209529369178085605",
+    "balance": 60481.149999999965
+  },
+  {
+    "profile": "buyer_6",
+    "name": "Manuel",
+    "surname": "",
+    "birth_date": "1979-02-14",
+    "dni": "15883136A",
+    "email": "manuel.@example.com",
+    "password": "80958094",
+    "city": "Vitoria-Gasteiz",
+    "iban": "ES61209561888184586878",
+    "balance": -58247.570000000014
+  },
+  {
+    "profile": "buyer_7",
+    "name": "María",
+    "surname": "",
+    "birth_date": "1968-12-31",
+    "dni": "68039956E",
+    "email": "maría.@example.com",
+    "password": "76037127",
+    "city": "Portugalete",
+    "iban": "ES28209502118938230942",
+    "balance": -128307.72999999997
+  },
+  {
+    "profile": "buyer_8",
+    "name": "Antonio",
+    "surname": "",
+    "birth_date": "1979-04-04",
+    "dni": "86157187S",
+    "email": "antonio.@example.com",
+    "password": "44474750",
+    "city": "Labastida",
+    "iban": "ES82209570406960653945",
+    "balance": -48202.67999999997
+  }
+]

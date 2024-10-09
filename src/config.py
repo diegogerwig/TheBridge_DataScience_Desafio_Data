@@ -1,5 +1,5 @@
 import random
-from utils import calculate_iban_control_digits, generate_spanish_dni
+from utils import calculate_iban_control_digits, generate_spanish_dni, generate_password
 
 # List of municipalities in the Basque Country
 cities = [
@@ -142,6 +142,11 @@ for profile in buyer_profiles.values():
 # Generate DNI for each profile
 for profile in buyer_profiles.values():
     profile['dni'] = generate_spanish_dni()
+
+
+# Generate password for each profile
+for profile in buyer_profiles.values():
+    profile['password'] = generate_password(6)
 
 
 consumption_profile = {
