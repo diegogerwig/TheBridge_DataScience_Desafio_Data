@@ -20,7 +20,7 @@ def save_to_csv(trxs, filename):
     data_folder.mkdir(parents=True, exist_ok=True)
     filepath = data_folder / f"{filename}.csv"
 
-    fieldnames = ['profile', 'name', 'age', 'iban', 'trx_id', 'timestamp', 'city',
+    fieldnames = ['profile', 'name', 'surname', 'birth_date', 'iban', 'trx_id', 'timestamp', 'city',
                   'trx_type', 'trx_cat', 'amount_eur', 'balance']
 
     with open(filepath, mode='w', newline='', encoding='utf-8') as file:
@@ -45,3 +45,13 @@ def calculate_iban_control_digits(bank_code, branch_code, account_number):
     control_digits = 98 - remainder
     
     return f"{control_digits:02d}"
+
+def generate_spanish_dni():
+    numbers = ''.join([str(random.randint(0, 9)) for _ in range(8)])
+    
+    letter_map = "TRWAGMYFPDXBNJZSQVHLCKE"
+    control_letter = letter_map[int(numbers) % 23]
+    
+    dni = numbers + control_letter
+    
+    return dni
