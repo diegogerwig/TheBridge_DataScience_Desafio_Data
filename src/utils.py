@@ -3,6 +3,23 @@ from pathlib import Path
 import csv
 
 
+adjectives = ['cool', 'super', 'hyper', 'mega', 'ultra', 'extreme', 'awesome', 'brilliant', 'clever', 'smart']
+nouns = ['tech', 'web', 'net', 'code', 'dev', 'app', 'cloud', 'data', 'byte', 'pixel']
+tlds = ['.com', '.net', '.org', '.io', '.tech', '.app', '.co', '.digital', '.online', '.site']
+
+
+def generate_random_domain():
+    adjective = random.choice(adjectives)
+    noun = random.choice(nouns)
+    tld = random.choice(tlds)
+    return f"{adjective}{noun}{tld}"
+
+
+def generate_email(name, surname):
+    domain = generate_random_domain()
+    return f"{name.lower()}.{surname.lower()}@{domain}"
+
+
 def generate_timestamp(date):
     if random.random() < 0.85:
         hour = random.randint(8, 20)
