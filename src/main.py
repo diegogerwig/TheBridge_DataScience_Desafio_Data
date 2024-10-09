@@ -11,7 +11,8 @@ def order_trx(trx, profile_name, profile_data):
     return OrderedDict([
         ('profile', profile_name),
         ('name', profile_data['name']),
-        ('age', profile_data['age']),
+        ('surname', profile_data['surname']),
+        ('birth_date', profile_data['birth_date']),
         ('iban', profile_data['iban']),
         ('trx_id', trx['trx_id']),
         ('timestamp', trx['timestamp']),
