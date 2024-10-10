@@ -6,7 +6,6 @@ from config import consumption_profile, cities
 fake = Faker(['es_ES'])
 
 billed_services = {}
-annual_bills_paid = {}
 
 def generate_transaction(customer_name, account_name, trx_city, idx, timestamp, trx_type, trx_cat, amount, balance):
     trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
@@ -28,8 +27,8 @@ def adjust_range(range_tuple, salary, index):
     adjusted_max = max_value * (salary / 2000) * index
     return (adjusted_min, adjusted_max)
 
-def generate_trxs(profile_data: dict, from_date: datetime):
-    global billed_services, annual_bills_paid
+def generate_trxs(profile_data: dict, from_date: datetime, annual_bills_paid: dict):
+    global billed_services
     customer_name = profile_data['name']
     account_name = profile_data['iban']
     trx_city = profile_data['city']
@@ -276,4 +275,4 @@ def generate_trxs(profile_data: dict, from_date: datetime):
     return {
         "trxs": trxs,
         "trx_count": len(trxs)
-    }
+    }, annual_bills_paid
