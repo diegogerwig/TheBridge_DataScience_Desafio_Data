@@ -1,34 +1,14 @@
 import random
 from datetime import datetime, timedelta
-from faker import Faker
-from utils import generate_timestamp, round_to_cents
-from config import consumption_profile, cities
-fake = Faker(['es_ES'])
+from utils import generate_timestamp, round_to_cents, get_transaction_city, generate_transaction, adjust_range
+from config import consumption_profile
 
-def generate_transaction(customer_name, account_name, trx_city, idx, timestamp, trx_type, trx_cat, amount, balance):
-    trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
-    return {
-        'customer': customer_name,
-        'account': account_name,
-        'trx_id': trx_id,
-        'timestamp': timestamp.isoformat(),
-        'city': trx_city,
-        'trx_type': trx_type,
-        'trx_cat': trx_cat,
-        'amount_eur': amount,
-        'balance': balance
-    }
-
-def adjust_range(range_tuple, salary, index):
-    min_value, max_value = range_tuple
-    adjusted_min = min_value * (salary / 2000) * index  # Assuming 2000 is a reference salary
-    adjusted_max = max_value * (salary / 2000) * index
-    return (adjusted_min, adjusted_max)
 
 def generate_trxs(profile_data: dict, from_date: datetime, annual_bills_paid: dict):
     customer_name = profile_data['name']
     account_name = profile_data['iban']
-    trx_city = profile_data['city']
+    residence_city = profile_data['city']
+    nearby_cities = profile_data.get('nearby_cities', [])  # Assuming nearby_cities is part of profile_data
 
     initial_salary = round_to_cents(random.uniform(*profile_data["salary"]))
     salary = initial_salary
@@ -44,7 +24,9 @@ def generate_trxs(profile_data: dict, from_date: datetime, annual_bills_paid: di
     idx = 1
     trxs = []
     current_date = from_date
-    
+    months_since_last_extra_income = 0
+    extra_income_amount = round_to_cents(random.uniform(0.1 * salary, 0.2 * salary))
+
     # Adjust fixed expenses based on salary and index_fix_expenses
     index_fix = profile_data['index_fix_expenses']
     adjusted_housing_range = adjust_range(consumption_profile["monthly"]["housing"][1 if profile_data['owns_house'] else 0]["range"], total_salary, index_fix)
@@ -61,9 +43,6 @@ def generate_trxs(profile_data: dict, from_date: datetime, annual_bills_paid: di
 
     # Calculate available money for variable expenses
     available_money = total_salary - total_fixed_expenses
-
-    months_since_last_extra_income = 0
-    extra_income_amount = round_to_cents(random.uniform(0.1 * salary, 0.2 * salary))
 
     last_salary_increase_year = from_date.year - 1
 
@@ -95,11 +74,13 @@ def generate_trxs(profile_data: dict, from_date: datetime, annual_bills_paid: di
         # Monthly salary (or salaries)
         if current_date.day == 1:
             timestamp = generate_timestamp(current_date)
+            trx_city = get_transaction_city(residence_city, nearby_cities, "incomes")
             balance += salary
             trxs.append(generate_transaction(customer_name, account_name, trx_city, idx, timestamp, "incomes", "salary", salary, balance))
             idx += 1
 
             if partner_salary > 0:
+                trx_city = get_transaction_city(residence_city, nearby_cities, "incomes")
                 balance += partner_salary
                 trxs.append(generate_transaction(customer_name, account_name, trx_city, idx, timestamp, "incomes", "salary_partner", partner_salary, balance))
                 idx += 1
@@ -107,6 +88,7 @@ def generate_trxs(profile_data: dict, from_date: datetime, annual_bills_paid: di
             # Extra income every 3-4 months
             months_since_last_extra_income += 1
             if months_since_last_extra_income >= random.randint(3, 4):
+                trx_city = get_transaction_city(residence_city, nearby_cities, "incomes")
                 balance += extra_income_amount
                 trxs.append(generate_transaction(customer_name, account_name, trx_city, idx, timestamp, "incomes", "extra_income", extra_income_amount, balance))
                 idx += 1
@@ -114,20 +96,24 @@ def generate_trxs(profile_data: dict, from_date: datetime, annual_bills_paid: di
 
             # Bonus in June and December
             if current_date.month in [6, 12]:
+                trx_city = get_transaction_city(residence_city, nearby_cities, "incomes")
                 bonus = round_to_cents(random.uniform(0.7 * salary, 0.8 * salary))
                 balance += bonus
                 trxs.append(generate_transaction(customer_name, account_name, trx_city, idx, timestamp, "incomes", "salary_bonus", bonus, balance))
                 idx += 1
 
                 if partner_salary > 0:
+                    trx_city = get_transaction_city(residence_city, nearby_cities, "incomes")
                     bonus_partner = round_to_cents(random.uniform(0.7 * partner_salary, 0.8 * partner_salary))
                     balance += bonus_partner
                     trxs.append(generate_transaction(customer_name, account_name, trx_city, idx, timestamp, "incomes", "salary_partner_bonus", bonus_partner, balance))
                     idx += 1
 
         # Rent or Mortgage (5th of each month)
-        if current_date.day == 4:
+        if current_date.day == 5:
             timestamp = generate_timestamp(current_date)
+            trx_city = get_transaction_city(residence_city, nearby_cities, "expenses")
+
             balance -= housing_expense
             trxs.append(generate_transaction(customer_name, account_name, trx_city, idx, timestamp, "expenses", "mortgage" if profile_data['owns_house'] else "rent", -housing_expense, balance))
             idx += 1
@@ -143,6 +129,7 @@ def generate_trxs(profile_data: dict, from_date: datetime, annual_bills_paid: di
                 if current_date.month == 7 or (current_date.month == 6 and random.random() < 0.5):
                     for annual_bill in consumption_profile["annual"]:
                         timestamp = generate_timestamp(current_date)
+                        trx_city = get_transaction_city(residence_city, nearby_cities, "expenses")
                         adjusted_range = adjust_range(annual_bill["range"], total_salary, index_fix)
                         bill_amount = round_to_cents(random.uniform(*adjusted_range))
                         balance -= bill_amount
@@ -157,6 +144,7 @@ def generate_trxs(profile_data: dict, from_date: datetime, annual_bills_paid: di
                 # 25% chance each day to bill this service
                 if random.random() < 0.25:
                     timestamp = generate_timestamp(current_date)
+                    trx_city = get_transaction_city(residence_city, nearby_cities, "expenses")
                     adjusted_range = adjust_range(service["range"], total_salary, index_fix)
                     bill_amount = round_to_cents(random.uniform(*adjusted_range))
                     balance -= bill_amount
@@ -178,10 +166,11 @@ def generate_trxs(profile_data: dict, from_date: datetime, annual_bills_paid: di
                 daily_var_expenses += trx_amount
                 balance -= trx_amount
                 trx_category = category['concept']
+                trx_city = get_transaction_city(residence_city, nearby_cities, "expenses")
                 trxs.append(generate_transaction(
                     customer_name, 
                     account_name,
-                    trx_city if random.random() < 0.8 else random.choice(cities),
+                    trx_city,
                     idx, 
                     timestamp, 
                     "expenses", 
@@ -199,6 +188,7 @@ def generate_trxs(profile_data: dict, from_date: datetime, annual_bills_paid: di
             if condition["concept"] == "children" and profile_data["children"] > 0:
                 if random.random() < condition["frequency"] and daily_var_expenses < max_var_expenses:
                     timestamp = generate_timestamp(current_date)
+                    trx_city = get_transaction_city(residence_city, nearby_cities, "expenses")
                     adjusted_range = adjust_range(condition["range"], total_salary, index_var)
                     base_child_expense = round_to_cents(random.uniform(*adjusted_range))
                     child_expense = base_child_expense * profile_data["children"]
@@ -225,6 +215,7 @@ def generate_trxs(profile_data: dict, from_date: datetime, annual_bills_paid: di
             if condition["concept"] == "car" and profile_data["has_car"]:
                 if random.random() < condition["frequency"] and daily_var_expenses < max_var_expenses:
                     timestamp = generate_timestamp(current_date)
+                    trx_city = get_transaction_city(residence_city, nearby_cities, "expenses")
                     adjusted_range = adjust_range(condition["range"], total_salary, index_var)
                     car_expense = min(round_to_cents(random.uniform(*adjusted_range)), max_var_expenses - daily_var_expenses)
                     balance -= car_expense
