@@ -1,11 +1,50 @@
 import random
 from pathlib import Path
 import csv
-
+from faker import Faker
 
 adjectives = ['cool', 'super', 'hyper', 'mega', 'ultra', 'extreme', 'awesome', 'brilliant', 'clever', 'smart']
 nouns = ['tech', 'web', 'net', 'code', 'dev', 'app', 'cloud', 'data', 'byte', 'pixel']
 tlds = ['.com', '.net', '.org', '.io', '.tech', '.app', '.co', '.digital', '.online', '.site']
+
+fake = Faker(['es_ES'])
+
+def get_transaction_city(residence_city, nearby_cities, transaction_type):
+    rand = random.random()
+    if transaction_type == "expenses":
+        if rand < 0.7:
+            return residence_city
+        elif rand < 0.95 and nearby_cities:
+            return random.choice(nearby_cities)
+        else:
+            return fake.city()
+    else:  # Para ingresos
+        if rand < 0.999:
+            return residence_city
+        elif nearby_cities:
+            return random.choice(nearby_cities)
+        else:
+            return fake.city()
+
+def generate_transaction(customer_name, account_name, trx_city, idx, timestamp, trx_type, trx_cat, amount, balance):
+    trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
+    return {
+        'customer': customer_name,
+        'account': account_name,
+        'trx_id': trx_id,
+        'timestamp': timestamp.isoformat(),
+        'city': trx_city,
+        'trx_type': trx_type,
+        'trx_cat': trx_cat,
+        'amount_eur': amount,
+        'balance': balance
+    }
+
+def adjust_range(range_tuple, salary, index):
+    min_value, max_value = range_tuple
+    adjusted_min = min_value * (salary / 2000) * index  # Assuming 2000 is a reference salary
+    adjusted_max = max_value * (salary / 2000) * index
+    return (adjusted_min, adjusted_max)
 
 
 def generate_random_domain():

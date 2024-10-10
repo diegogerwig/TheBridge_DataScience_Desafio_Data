@@ -1,27 +1,16 @@
 import random
 from utils import calculate_iban_control_digits, generate_spanish_dni, generate_password
 
-# List of municipalities in the Basque Country
-cities = [
-    # Bizkaia
-    "Bilbao", "Barakaldo", "Getxo", "Portugalete", "Santurtzi", "Basauri", "Leioa", 
-    "Galdakao", "Sestao", "Durango", "Erandio", "Bermeo", "Mungia", "Sopela", "Berango",
-    # Gipuzkoa
-    "Donostia", "Irun", "Errenteria", "Eibar", "Zarautz", "Arrasate", 
-    "Hernani", "Lasarte-Oria", "Hondarribia", "Pasaia", "Andoain",
-    # Araba
-    "Vitoria-Gasteiz", "Llodio", "Amurrio", "Salvatierra/Agurain", "Oyón-Oion", 
-    "Iruña de Oca", "Alegría-Dulantzi", "Zuia", "Labastida", "Elciego"
-]
-
 buyer_profiles = {
-    #   'buyer_0': {
-    #     'name': 'Luis',
-    #     'surname': 'Garay',
+    # 'buyer_0': {
+    #     'name': 'xx',
+    #     'surname': 'yy',
     #     'city': 'Bilbao',
+    #     'nearby_municipalities': ['Barakaldo', 'Getxo', 'Portugalete', 'Santurtzi', 'Basauri', 'Leioa', 'Galdakao', 'Sestao', 'Erandio', 'Sopela'],
+    #     'nearby_capitals': ['Vitoria-Gasteiz', 'San Sebastián', 'Santander', 'Logroño', 'Burgos'],
     #     'birth_date': '1996-08-10',
-    #     'initial_assets': (1000, 1000),
-    #     'salary': (100, 1000),
+    #     'initial_assets': (3000, 5000),
+    #     'salary': (500, 3000),
     #     'has_partner': False,
     #     'partner_works': False,
     #     'children': 0,
@@ -31,9 +20,11 @@ buyer_profiles = {
     #     'index_var_expenses': 1,
     # },
     'buyer_1': {
-        'name': 'Luis',
-        'surname': 'Garay',
+        'name': 'Aitor',
+        'surname': 'López',
         'city': 'Bilbao',
+        'nearby_municipalities': ['Barakaldo', 'Getxo', 'Portugalete', 'Santurtzi', 'Basauri', 'Leioa', 'Galdakao', 'Sestao', 'Erandio', 'Sopela'],
+        'nearby_capitals': ['Vitoria-Gasteiz', 'San Sebastián', 'Santander', 'Logroño', 'Burgos'],
         'birth_date': '1996-08-10',
         'initial_assets': (3000, 5000),
         'salary': (500, 3000),
@@ -44,12 +35,13 @@ buyer_profiles = {
         'has_car': True,
         'index_fix_expenses': 1,
         'index_var_expenses': 0.9,
-
     },
     'buyer_2': {
-        'name': 'Carmen',
-        'surname': 'Lozano',
-        'city': 'Zarautz',
+        'name': 'Aitxiber',
+        'surname': 'Beitia',
+        'city': 'Gernika',
+        'nearby_municipalities': ['Mundaka', 'Bermeo', 'Busturia', 'Muxika', 'Forua', 'Kortezubi', 'Arratzu', 'Ajangiz', 'Mendata', 'Errigoiti'],
+        'nearby_capitals': ['Bilbao', 'Vitoria-Gasteiz', 'San Sebastián', 'Santander', 'Pamplona'],
         'birth_date': '1984-09-05',
         'initial_assets': (1000, 12000),
         'salary': (1900, 2000),
@@ -63,8 +55,10 @@ buyer_profiles = {
     },
     'buyer_3': {
         'name': 'Ana',
-        'surname': 'Piñeiro',
-        'city': 'Amurrio',
+        'surname': 'Etxebarria',
+        'city': 'Vitoria-Gasteiz',
+        'nearby_municipalities': ['Lasarte', 'Zuia', 'Legutio', 'Zigoitia', 'Arratzua-Ubarrundia', 'Elburgo', 'Alegría-Dulantzi', 'Iruña de Oca', 'Armiñón', 'Ribera Baja'],
+        'nearby_capitals': ['Bilbao', 'San Sebastián', 'Logroño', 'Pamplona', 'Burgos'],
         'birth_date': '1989-08-23',
         'initial_assets': (6000, 8000),
         'salary': (3000, 3500),
@@ -77,9 +71,11 @@ buyer_profiles = {
         'index_var_expenses': 0.5,
     },
     'buyer_4': {
-        'name': 'Jorge',
-        'surname': 'Moreno',
-        'city': 'Galdakao',
+        'name': 'Marc',
+        'surname': 'Andreu',
+        'city': 'Barcelona',
+        'nearby_municipalities': ['L\'Hospitalet de Llobregat', 'Badalona', 'Santa Coloma de Gramenet', 'Cornellà de Llobregat', 'El Prat de Llobregat', 'Esplugues de Llobregat', 'Sant Adrià de Besòs', 'Sant Just Desvern', 'Sant Feliu de Llobregat', 'Sant Joan Despí'],
+        'nearby_capitals': ['Girona', 'Tarragona', 'Lleida', 'Zaragoza', 'Valencia'],
         'birth_date': '1974-05-23',
         'initial_assets': (5000, 6000),
         'salary': (1000, 3000),
@@ -93,8 +89,10 @@ buyer_profiles = {
     },
     'buyer_5': {
         'name': 'Sara',
-        'surname': 'Gurrutxaga',
-        'city': 'Donostia',
+        'surname': 'Urkiaga',
+        'city': 'Plentzia',
+        'nearby_municipalities': ['Gorliz', 'Lemoiz', 'Gatika', 'Urduliz', 'Barrika', 'Sopela', 'Laukiz', 'Maruri-Jatabe', 'Berango', 'Mungia'],
+        'nearby_capitals': ['Bilbao', 'Vitoria-Gasteiz', 'San Sebastián', 'Santander', 'Burgos'],
         'birth_date': '1994-03-12',
         'initial_assets': (1000, 2000),
         'salary': (2100, 2800),
@@ -108,8 +106,10 @@ buyer_profiles = {
     },
     'buyer_6': {
         'name': 'Manuel',
-        'surname': 'Rodríguez',
-        'city': 'Vitoria-Gasteiz',
+        'surname': 'Díez',
+        'city': 'Valladolid',
+        'nearby_municipalities': ['Laguna de Duero', 'Arroyo de la Encomienda', 'La Cistérniga', 'Simancas', 'Zaratán', 'Santovenia de Pisuerga', 'Renedo de Esgueva', 'Cabezón de Pisuerga', 'Cigales', 'Tudela de Duero'],
+        'nearby_capitals': ['Palencia', 'Salamanca', 'León', 'Burgos', 'Segovia'],
         'birth_date': '1979-02-14',
         'initial_assets': (1000, 2000),
         'salary': (1100, 3000),
@@ -122,9 +122,11 @@ buyer_profiles = {
         'index_var_expenses': 1.5,
     },
     'buyer_7': {
-        'name': 'María',
-        'surname': 'Valdec',
-        'city': 'Portugalete',
+        'name': 'Agurtzane',
+        'surname': 'Laka',
+        'city': 'Bilbao',
+        'nearby_municipalities': ['Barakaldo', 'Getxo', 'Portugalete', 'Santurtzi', 'Basauri', 'Leioa', 'Galdakao', 'Sestao', 'Erandio', 'Sopela'],
+        'nearby_capitals': ['Vitoria-Gasteiz', 'San Sebastián', 'Santander', 'Logroño', 'Burgos'],
         'birth_date': '1968-12-31',
         'initial_assets': (10000, 1500),
         'salary': (1200, 1500),
@@ -137,9 +139,11 @@ buyer_profiles = {
         'index_var_expenses': 0.7,
     },
     'buyer_8': {
-        'name': 'Antonio',
-        'surname': 'Miranda',
-        'city': 'Labastida',
+        'name': 'Patxi',
+        'surname': 'Urrutia',
+        'city': 'Durango',
+        'nearby_municipalities': ['Iurreta', 'Abadiño', 'Izurtza', 'Mañaria', 'Zaldibar', 'Berriz', 'Elorrio', 'Atxondo', 'Amorebieta-Etxano', 'Garai'],
+        'nearby_capitals': ['Bilbao', 'Vitoria-Gasteiz', 'San Sebastián', 'Santander', 'Pamplona'],
         'birth_date': '1979-04-04',
         'initial_assets': (1000, 2000),
         'salary': (2000, 4000),
@@ -153,7 +157,6 @@ buyer_profiles = {
     }
 }
 
-
 # Generate IBAN for each profile
 for profile in buyer_profiles.values():
     bank_code = "2095"
@@ -162,16 +165,13 @@ for profile in buyer_profiles.values():
     control_digits = calculate_iban_control_digits(bank_code, branch_code, account_number)
     profile['iban'] = f"ES{control_digits}{bank_code}{branch_code}{account_number}"
 
-
 # Generate DNI for each profile
 for profile in buyer_profiles.values():
     profile['dni'] = generate_spanish_dni()
 
-
 # Generate password for each profile
 for profile in buyer_profiles.values():
     profile['password'] = generate_password(6)
-
 
 consumption_profile = {
     "annual" : [
@@ -199,7 +199,6 @@ consumption_profile = {
         {"concept": "healthcare", "range": (38, 190), "frequency": 0.03},
         {"concept": "education", "range": (42, 79), "frequency": 0.04},
         {"concept": "cash", "range": (100, 100), "frequency": 0.17},
-
     ],
     "occasional": [
         {"concept": "travel", "range": (280, 1900), "frequency": 0.015},
