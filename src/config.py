@@ -15,6 +15,21 @@ cities = [
 ]
 
 buyer_profiles = {
+    #   'buyer_0': {
+    #     'name': 'Luis',
+    #     'surname': 'Garay',
+    #     'city': 'Bilbao',
+    #     'birth_date': '1996-08-10',
+    #     'initial_assets': (1000, 1000),
+    #     'salary': (100, 1000),
+    #     'has_partner': False,
+    #     'partner_works': False,
+    #     'children': 0,
+    #     'owns_house': False,
+    #     'has_car': False,
+    #     'index_fix_expenses': 1,
+    #     'index_var_expenses': 1,
+    # },
     'buyer_1': {
         'name': 'Luis',
         'surname': 'Garay',

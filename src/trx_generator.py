@@ -5,8 +5,6 @@ from utils import generate_timestamp, round_to_cents
 from config import consumption_profile, cities
 fake = Faker(['es_ES'])
 
-billed_services = {}
-
 def generate_transaction(customer_name, account_name, trx_city, idx, timestamp, trx_type, trx_cat, amount, balance):
     trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
     return {
@@ -28,7 +26,6 @@ def adjust_range(range_tuple, salary, index):
     return (adjusted_min, adjusted_max)
 
 def generate_trxs(profile_data: dict, from_date: datetime, annual_bills_paid: dict):
-    global billed_services
     customer_name = profile_data['name']
     account_name = profile_data['iban']
     trx_city = profile_data['city']
@@ -69,6 +66,9 @@ def generate_trxs(profile_data: dict, from_date: datetime, annual_bills_paid: di
     extra_income_amount = round_to_cents(random.uniform(0.1 * salary, 0.2 * salary))
 
     last_salary_increase_year = from_date.year - 1
+
+    # Initialize annual_bills_paid for this profile
+    profile_annual_bills_paid = {}
 
     while current_date <= to_date:
         # Annual salary increase (2-4%) on the first day of each year
@@ -135,10 +135,10 @@ def generate_trxs(profile_data: dict, from_date: datetime, annual_bills_paid: di
         # Annual bills (taxes and insurance in June or July)
         if current_date.month in [6, 7]:
             year_key = current_date.year
-            if year_key not in annual_bills_paid:
-                annual_bills_paid[year_key] = False
+            if year_key not in profile_annual_bills_paid:
+                profile_annual_bills_paid[year_key] = False
 
-            if not annual_bills_paid[year_key]:
+            if not profile_annual_bills_paid[year_key]:
                 # 50% chance to bill in June, otherwise it will be billed in July
                 if current_date.month == 7 or (current_date.month == 6 and random.random() < 0.5):
                     for annual_bill in consumption_profile["annual"]:
@@ -149,44 +149,19 @@ def generate_trxs(profile_data: dict, from_date: datetime, annual_bills_paid: di
                         trxs.append(generate_transaction(customer_name, account_name, trx_city, idx, timestamp, "expenses", annual_bill["concept"], -bill_amount, balance))
                         idx += 1
                     
-                    annual_bills_paid[year_key] = True
+                    profile_annual_bills_paid[year_key] = True
 
         # Utility bills (randomly distributed between 5th and 8th of each month)
         if 5 <= current_date.day <= 8:
-            global billed_services
-            
-            # Initialize billed_services for this month if it's not already set
-            month_key = f"{current_date.year}-{current_date.month}"
-            if month_key not in billed_services:
-                billed_services[month_key] = {service['concept']: False for service in consumption_profile["monthly"]["basic_services"]}
-            
             for service in consumption_profile["monthly"]["basic_services"]:
-                # If this service hasn't been billed yet this month
-                if not billed_services[month_key][service['concept']]:
-                    # 25% chance each day to bill this service
-                    if random.random() < 0.25:
-                        timestamp = generate_timestamp(current_date)
-                        adjusted_range = adjust_range(service["range"], total_salary, index_fix)
-                        bill_amount = round_to_cents(random.uniform(*adjusted_range))
-                        balance -= bill_amount
-                        trxs.append(generate_transaction(customer_name, account_name, trx_city, idx, timestamp, "expenses", service["concept"], -bill_amount, balance))
-                        idx += 1
-                        # Mark this service as billed
-                        billed_services[month_key][service['concept']] = True
-            
-            # If it's the 8th and some services haven't been billed, bill them now
-            if current_date.day == 8:
-                for service in consumption_profile["monthly"]["basic_services"]:
-                    if not billed_services[month_key][service['concept']]:
-                        timestamp = generate_timestamp(current_date)
-                        adjusted_range = adjust_range(service["range"], total_salary, index_fix)
-                        bill_amount = round_to_cents(random.uniform(*adjusted_range))
-                        balance -= bill_amount
-                        trxs.append(generate_transaction(customer_name, account_name, trx_city, idx, timestamp, "expenses", service["concept"], -bill_amount, balance))
-                        idx += 1
-                
-                # Clear the billed_services for this month
-                del billed_services[month_key]
+                # 25% chance each day to bill this service
+                if random.random() < 0.25:
+                    timestamp = generate_timestamp(current_date)
+                    adjusted_range = adjust_range(service["range"], total_salary, index_fix)
+                    bill_amount = round_to_cents(random.uniform(*adjusted_range))
+                    balance -= bill_amount
+                    trxs.append(generate_transaction(customer_name, account_name, trx_city, idx, timestamp, "expenses", service["concept"], -bill_amount, balance))
+                    idx += 1
 
         # Variable expenses
         index_var = profile_data['index_var_expenses']
@@ -275,4 +250,4 @@ def generate_trxs(profile_data: dict, from_date: datetime, annual_bills_paid: di
     return {
         "trxs": trxs,
         "trx_count": len(trxs)
-    }, annual_bills_paid
+    }, profile_annual_bills_paid

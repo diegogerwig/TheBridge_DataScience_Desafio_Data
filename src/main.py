@@ -11,6 +11,7 @@ from prettytable import PrettyTable
 def generate_data(start_date):
     users = []
     transactions = []
+    annual_bills_paid = {}
 
     print(f"\nGenerating data for {len(buyer_profiles)} profiles:")
     print("-" * 50)
@@ -36,7 +37,7 @@ def generate_data(start_date):
         }
         users.append(user)
         
-        data = generate_trxs(profile_data, start_date)
+        data, annual_bills_paid = generate_trxs(profile_data, start_date, annual_bills_paid)
         
         for trx in data['trxs']:
             transaction = {
@@ -115,7 +116,6 @@ def save_csv(users, transactions, filename):
                 ])
 
 if __name__ == "__main__":
-
     start_date = datetime.strptime("2022-01-01", "%Y-%m-%d")
 
     users, transactions = generate_data(start_date)
@@ -159,7 +159,7 @@ if __name__ == "__main__":
 
     print("\n🚀 Done generating data!")
     
-    # Generate and display final report
+    # Generate and display final report for all profiles
     final_report = generate_final_report(users, transactions)
-    print(f"\nFinal Report (Period: {years_period:.2f} years)")
+    print(f"\nFinal Report for all profiles (Period: {years_period:.2f} years)")
     print(final_report)
