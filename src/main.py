@@ -6,12 +6,11 @@ from config import buyer_profiles
 from trx_generator import generate_trxs
 from utils import generate_spanish_dni, generate_email, generate_password
 import random
+from prettytable import PrettyTable
 
-
-def generate_data():
+def generate_data(start_date):
     users = []
     transactions = []
-    start_date = datetime.strptime("2022-01-01", "%Y-%m-%d")
 
     print(f"\nGenerating data for {len(buyer_profiles)} profiles:")
     print("-" * 50)
@@ -53,11 +52,42 @@ def generate_data():
 
     return users, transactions
 
+def generate_final_report(users, transactions):
+    report = PrettyTable()
+    report.field_names = ["Profile", "Initial Assets", "Total Income", "Annual Exp.", "Monthly Exp.", "Frequent Exp.", "Occasional Exp.", "Conditional Exp.", "Final Balance"]
+    report.align = "r"
+
+    for user in users:
+        user_transactions = [t for t in transactions if t['dni'] == user['dni']]
+        
+        initial_assets = user['assets']
+        total_income = sum(t['amount'] for t in user_transactions if t['type'] == 'incomes')
+        
+        annual_expenses = sum(abs(t['amount']) for t in user_transactions if t['type'] == 'expenses' and t['category'] in ['taxes', 'insurance'])
+        monthly_expenses = sum(abs(t['amount']) for t in user_transactions if t['type'] == 'expenses' and t['category'] in ['water', 'electricity', 'gas', 'internet', 'phone', 'rent', 'mortgage'])
+        frequent_expenses = sum(abs(t['amount']) for t in user_transactions if t['type'] == 'expenses' and t['category'] in ['food', 'transport', 'leisure', 'clothing', 'healthcare', 'education', 'cash'])
+        occasional_expenses = sum(abs(t['amount']) for t in user_transactions if t['type'] == 'expenses' and t['category'] in ['travel', 'appliances', 'repairs', 'gifts'])
+        conditional_expenses = sum(abs(t['amount']) for t in user_transactions if t['type'] == 'expenses' and t['category'] in ['children', 'car'])
+        
+        final_balance = initial_assets + total_income - (annual_expenses + monthly_expenses + frequent_expenses + occasional_expenses + conditional_expenses)
+        
+        report.add_row([
+            user['profile'],
+            f"{initial_assets:.2f}",
+            f"{total_income:.2f}",
+            f"{annual_expenses:.2f}",
+            f"{monthly_expenses:.2f}",
+            f"{frequent_expenses:.2f}",
+            f"{occasional_expenses:.2f}",
+            f"{conditional_expenses:.2f}",
+            f"{final_balance:.2f}"
+        ])
+
+    return report
 
 def save_json(data, filename):
     with open(filename, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-
 
 def save_csv(users, transactions, filename):
     with open(filename, 'w', newline='', encoding='utf-8') as f:
@@ -84,9 +114,14 @@ def save_csv(users, transactions, filename):
                     '', user['city'], '', '', '', balance
                 ])
 
-
 if __name__ == "__main__":
-    users, transactions = generate_data()
+
+    start_date = datetime.strptime("2022-01-01", "%Y-%m-%d")
+
+    users, transactions = generate_data(start_date)
+
+    end_date = max(datetime.fromisoformat(t['timestamp']) for t in transactions)
+    years_period = (end_date - start_date).days / 365
 
     # Create data folder outside of src
     project_root = Path(__file__).resolve().parent.parent
@@ -123,3 +158,8 @@ if __name__ == "__main__":
         print(f"✅ CSV file saved at: {csv_path}")
 
     print("\n🚀 Done generating data!")
+    
+    # Generate and display final report
+    final_report = generate_final_report(users, transactions)
+    print(f"\nFinal Report (Period: {years_period:.2f} years)")
+    print(final_report)

@@ -27,7 +27,9 @@ buyer_profiles = {
         'children': 0,
         'owns_house': False,
         'has_car': True,
-        'index_expenses': 0.9,
+        'index_fix_expenses': 1,
+        'index_var_expenses': 0.9,
+
     },
     'buyer_2': {
         'name': 'Carmen',
@@ -41,7 +43,8 @@ buyer_profiles = {
         'children': 2,
         'owns_house': True,
         'has_car': False,
-        'index_expenses': 1.1,
+        'index_fix_expenses': 1,
+        'index_var_expenses': 1.1,
     },
     'buyer_3': {
         'name': 'Ana',
@@ -55,7 +58,8 @@ buyer_profiles = {
         'children': 0,
         'owns_house': True,
         'has_car': True,
-        'index_expenses': 0.5,
+        'index_fix_expenses': 1,
+        'index_var_expenses': 0.5,
     },
     'buyer_4': {
         'name': 'Jorge',
@@ -69,7 +73,8 @@ buyer_profiles = {
         'children': 3,
         'owns_house': True,
         'has_car': True,
-        'index_expenses': 1.1,
+        'index_fix_expenses': 1,
+        'index_var_expenses': 1.1,
     },
     'buyer_5': {
         'name': 'Sara',
@@ -83,7 +88,8 @@ buyer_profiles = {
         'children': 0,
         'owns_house': True,
         'has_car': False,
-        'index_expenses': 0.5,
+        'index_fix_expenses': 1,
+        'index_var_expenses': 0.5,
     },
     'buyer_6': {
         'name': 'Manuel',
@@ -97,7 +103,8 @@ buyer_profiles = {
         'children': 0,
         'owns_house': True,
         'has_car': False,
-        'index_expenses': 1.5,
+        'index_fix_expenses': 1,
+        'index_var_expenses': 1.5,
     },
     'buyer_7': {
         'name': 'María',
@@ -111,7 +118,8 @@ buyer_profiles = {
         'children': 2,
         'owns_house': True,
         'has_car': True,
-        'index_expenses': 0.7,
+        'index_fix_expenses': 1,
+        'index_var_expenses': 0.7,
     },
     'buyer_8': {
         'name': 'Antonio',
@@ -125,7 +133,8 @@ buyer_profiles = {
         'children': 0,
         'owns_house': True,
         'has_car': True,
-        'index_expenses': 1.2,
+        'index_fix_expenses': 1.1,
+        'index_var_expenses': 1.2,
     }
 }
 
