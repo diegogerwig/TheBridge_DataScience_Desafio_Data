@@ -133,7 +133,7 @@ buyer_profiles = {
         'children': 0,
         'owns_house': True,
         'has_car': True,
-        'index_fix_expenses': 1,
+        'index_fix_expenses': 1.1,
         'index_var_expenses': 1.2,
     }
 }
