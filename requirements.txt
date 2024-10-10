@@ -1,5 +1,4 @@
 pandas
 faker
 prettytable
-geopy
 fastapi[standard]
