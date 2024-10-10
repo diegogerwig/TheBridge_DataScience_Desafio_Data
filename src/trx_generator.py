@@ -36,7 +36,7 @@ def generate_trxs(profile_data: dict, from_date: datetime):
     if profile_data['has_partner'] and profile_data['partner_works']:
         partner_salary = round_to_cents(random.uniform(profile_data["salary"][0] * 0.8, profile_data["salary"][1] * 1.1))
 
-    balance = round_to_cents(random.uniform(*profile_data['initial_balance_range']))
+    balance = round_to_cents(random.uniform(*profile_data['initial_assets']))
 
     to_date = datetime.now()
     idx = 1
