@@ -3,6 +3,8 @@ from pathlib import Path
 import csv
 from faker import Faker
 from unidecode import unidecode
+from prettytable import PrettyTable
+import json
 
 adjectives = ['cool', 'super', 'hyper', 'mega', 'ultra', 'extreme', 'awesome', 'brilliant', 'clever', 'smart']
 nouns = ['tech', 'web', 'net', 'code', 'dev', 'app', 'cloud', 'data', 'byte', 'pixel']
@@ -79,27 +81,7 @@ def round_to_cents(amount):
     return round(amount, 2)
 
 
-def save_to_csv(trxs, filename):
-    data_folder = Path(__file__).resolve().parent.parent / "data"
-    data_folder.mkdir(parents=True, exist_ok=True)
-    filepath = data_folder / f"{filename}.csv"
-
-    fieldnames = ['profile', 'name', 'surname', 'birth_date', 'iban', 'trx_id', 'timestamp', 'city',
-                  'trx_type', 'trx_cat', 'amount_eur', 'balance']
-
-    with open(filepath, mode='w', newline='', encoding='utf-8') as file:
-        writer = csv.DictWriter(file, fieldnames=fieldnames)
-        writer.writeheader()
-        for trx in trxs:
-            if 'balance' in trx:
-                trx['balance'] = round(trx['balance'], 2)
-            row = {field: trx.get(field, '') for field in fieldnames}
-            writer.writerow(row)
-    return str(filepath.resolve())
-
-
 def calculate_iban_control_digits(bank_code, branch_code, account_number):
-    
     iban = f"{bank_code}{branch_code}{account_number}142800"
     iban = ''.join(str(ord(char) - 55) if char.isalpha() else char for char in iban)
     remainder = int(iban) % 97
@@ -119,3 +101,68 @@ def generate_password(length):
     digits = '0123456789'
     password = ''.join(random.choice(digits) for _ in range(length))
     return password
+
+
+def save_json(data, filename):
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def save_csv(users, transactions, filename):
+    with open(filename, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow(['profile', 'name', 'surname', 'birth_date', 'dni', 'email', 'password', 'iban', 'assets', 'trx_date', 'trx_city', 'trx_type', 'trx_cat', 'trx_amount', 'balance'])
+        
+        for user in users:
+            user_transactions = [t for t in transactions if t['dni'] == user['dni']]
+            balance = round(user['assets'], 2)
+            if user_transactions:
+                for transaction in user_transactions:
+                    balance = round(balance + transaction['amount'], 2)
+                    writer.writerow([
+                        user['profile'], user['name'], user['surname'], user['birth_date'],
+                        user['dni'], user['email'], user['password'], user['iban'], user['assets'],
+                        transaction['timestamp'], user['city'], 
+                        transaction['type'], transaction['category'], transaction['amount'],
+                        balance
+                    ])
+            else:
+                writer.writerow([
+                    user['profile'], user['name'], user['surname'], user['birth_date'],
+                    user['dni'], user['email'], user['password'], user['iban'], user['assets'],
+                    '', user['city'], '', '', '', balance
+                ])
+
+
+def generate_final_report(users, transactions):
+    report = PrettyTable()
+    report.field_names = ["Profile", "Initial Assets", "Total Income", "Annual Exp.", "Monthly Exp.", "Frequent Exp.", "Occasional Exp.", "Conditional Exp.", "Final Balance"]
+    report.align = "r"
+
+    for user in users:
+        user_transactions = [t for t in transactions if t['dni'] == user['dni']]
+        
+        initial_assets = user['assets']
+        total_income = sum(t['amount'] for t in user_transactions if t['type'] == 'incomes')
+        
+        annual_expenses = sum(abs(t['amount']) for t in user_transactions if t['type'] == 'expenses' and t['category'] in ['taxes', 'insurance'])
+        monthly_expenses = sum(abs(t['amount']) for t in user_transactions if t['type'] == 'expenses' and t['category'] in ['water', 'electricity', 'gas', 'internet', 'phone', 'rent', 'mortgage'])
+        frequent_expenses = sum(abs(t['amount']) for t in user_transactions if t['type'] == 'expenses' and t['category'] in ['food', 'transport', 'leisure', 'clothing', 'healthcare', 'education', 'cash'])
+        occasional_expenses = sum(abs(t['amount']) for t in user_transactions if t['type'] == 'expenses' and t['category'] in ['travel', 'appliances', 'repairs', 'gifts'])
+        conditional_expenses = sum(abs(t['amount']) for t in user_transactions if t['type'] == 'expenses' and t['category'] in ['children', 'car'])
+        
+        final_balance = initial_assets + total_income - (annual_expenses + monthly_expenses + frequent_expenses + occasional_expenses + conditional_expenses)
+        
+        report.add_row([
+            user['profile'],
+            f"{initial_assets:.2f}",
+            f"{total_income:.2f}",
+            f"{annual_expenses:.2f}",
+            f"{monthly_expenses:.2f}",
+            f"{frequent_expenses:.2f}",
+            f"{occasional_expenses:.2f}",
+            f"{conditional_expenses:.2f}",
+            f"{final_balance:.2f}"
+        ])
+
+    return report
