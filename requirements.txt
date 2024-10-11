@@ -8,3 +8,4 @@ fastapi[standard]
 uvicorn
 mpld3
 unidecode
+bcrypt

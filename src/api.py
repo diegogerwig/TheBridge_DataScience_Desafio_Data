@@ -6,8 +6,12 @@ from config import buyer_profiles
 import uvicorn
 from utils import generate_spanish_dni, generate_email, generate_password
 import random
+import bcrypt
 
 app = FastAPI()
+
+def encrypt_value(value):
+    return bcrypt.hashpw(str(value).encode('utf-8'), bcrypt.gensalt(10)).decode('utf-8')
 
 def generate_user_data(profile_name, profile_data):
     dni = generate_spanish_dni()
@@ -16,26 +20,26 @@ def generate_user_data(profile_name, profile_data):
     initial_assets = round(float(random.uniform(*profile_data['initial_assets'])), 2)
 
     return {
-        "profile": profile_name,
-        "name": profile_data['name'],
-        "surname": profile_data['surname'],
-        "birth_date": profile_data['birth_date'],
-        "dni": dni,
-        "email": email,
-        "password": password,
-        "city": profile_data['city'],
-        "iban": profile_data['iban'],
-        "assets": initial_assets,
+        "profile": encrypt_value(profile_name),
+        "name": encrypt_value(profile_data['name']),
+        "surname": encrypt_value(profile_data['surname']),
+        "birth_date": encrypt_value(profile_data['birth_date']),
+        "dni": encrypt_value(dni),
+        "email": encrypt_value(email),
+        "password": encrypt_value(password),
+        "city": encrypt_value(profile_data['city']),
+        "iban": encrypt_value(profile_data['iban']),
+        "assets": encrypt_value(initial_assets),
     }
 
 def generate_transaction_data(user, trxs):
     return [
         {
-            "dni": user["dni"],
-            "type": "expenses" if trx['amount_eur'] < 0 else "incomes",
-            "category": trx['trx_cat'],
-            "amount": trx['amount_eur'],
-            "timestamp": trx['timestamp']
+            "dni": encrypt_value(user["dni"]),
+            "type": encrypt_value("expenses" if trx['amount_eur'] < 0 else "incomes"),
+            "category": encrypt_value(trx['trx_cat']),
+            "amount": encrypt_value(trx['amount_eur']),
+            "timestamp": encrypt_value(trx['timestamp'])
         }
         for trx in trxs
     ]
