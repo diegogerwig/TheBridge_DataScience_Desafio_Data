@@ -10,6 +10,7 @@ tlds = ['.com', '.net', '.org', '.io', '.tech', '.app', '.co', '.digital', '.onl
 
 fake = Faker(['es_ES'])
 
+
 def get_transaction_city(residence_city, nearby_cities, transaction_type):
     rand = random.random()
     if transaction_type == "expenses":
@@ -27,6 +28,7 @@ def get_transaction_city(residence_city, nearby_cities, transaction_type):
         else:
             return fake.city()
 
+
 def generate_transaction(customer_name, account_name, trx_city, idx, timestamp, trx_type, trx_cat, amount, balance):
     trx_id = f"TRX_N-{str(idx).zfill(5)}-{str(fake.unique.random_number(digits=8)).zfill(8)}"
     return {
@@ -40,6 +42,7 @@ def generate_transaction(customer_name, account_name, trx_city, idx, timestamp, 
         'amount_eur': amount,
         'balance': balance
     }
+
 
 def adjust_range(range_tuple, salary, index):
     min_value, max_value = range_tuple
