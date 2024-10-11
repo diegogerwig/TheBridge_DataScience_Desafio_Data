@@ -2,6 +2,7 @@ import random
 from pathlib import Path
 import csv
 from faker import Faker
+from unidecode import unidecode
 
 adjectives = ['cool', 'super', 'hyper', 'mega', 'ultra', 'extreme', 'awesome', 'brilliant', 'clever', 'smart']
 nouns = ['tech', 'web', 'net', 'code', 'dev', 'app', 'cloud', 'data', 'byte', 'pixel']
@@ -56,6 +57,8 @@ def generate_random_domain():
 
 def generate_email(name, surname):
     domain = generate_random_domain()
+    name = unidecode(name)
+    surname = unidecode(surname)
     return f"{name.lower()}.{surname.lower()}@{domain}"
 
 
