@@ -1,0 +1,98 @@
+[
+  {
+    "profile": "buyer_1",
+    "name": "Aitor",
+    "surname": "López",
+    "birth_date": "1996-08-10",
+    "dni": "36223003G",
+    "email": "aitor.lopez@awesometech.com",
+    "password": "972820",
+    "city": "Bilbao",
+    "iban": "ES66209590029379665539",
+    "assets": 3027.55
+  },
+  {
+    "profile": "buyer_2",
+    "name": "Aitxiber",
+    "surname": "Beitia",
+    "birth_date": "1984-09-05",
+    "dni": "80757954D",
+    "email": "aitxiber.beitia@brillianttech.tech",
+    "password": "378114",
+    "city": "Gernika",
+    "iban": "ES55209577186017995967",
+    "assets": 5415.67
+  },
+  {
+    "profile": "buyer_3",
+    "name": "Ana",
+    "surname": "Etxebarria",
+    "birth_date": "1989-08-23",
+    "dni": "08832424X",
+    "email": "ana.etxebarria@superbyte.tech",
+    "password": "607900",
+    "city": "Vitoria-Gasteiz",
+    "iban": "ES12209555002079555835",
+    "assets": 6589.87
+  },
+  {
+    "profile": "buyer_4",
+    "name": "Marc",
+    "surname": "Andreu",
+    "birth_date": "1974-05-23",
+    "dni": "73453805Q",
+    "email": "marc.andreu@cooldev.digital",
+    "password": "022212",
+    "city": "Barcelona",
+    "iban": "ES55209545547013648423",
+    "assets": 5169.78
+  },
+  {
+    "profile": "buyer_5",
+    "name": "Sara",
+    "surname": "Urkiaga",
+    "birth_date": "1994-03-12",
+    "dni": "45707802V",
+    "email": "sara.urkiaga@smartdev.tech",
+    "password": "929552",
+    "city": "Plentzia",
+    "iban": "ES06209533517682721229",
+    "assets": 1938.23
+  },
+  {
+    "profile": "buyer_6",
+    "name": "Manuel",
+    "surname": "Díez",
+    "birth_date": "1979-02-14",
+    "dni": "66664911D",
+    "email": "manuel.diez@megadata.digital",
+    "password": "061018",
+    "city": "Valladolid",
+    "iban": "ES39209501256347783901",
+    "assets": 1833.1
+  },
+  {
+    "profile": "buyer_7",
+    "name": "Agurtzane",
+    "surname": "Laka",
+    "birth_date": "1968-12-31",
+    "dni": "94450005E",
+    "email": "agurtzane.laka@extremepixel.io",
+    "password": "009974",
+    "city": "Bilbao",
+    "iban": "ES16209548794962905469",
+    "assets": 8230.09
+  },
+  {
+    "profile": "buyer_8",
+    "name": "Patxi",
+    "surname": "Urrutia",
+    "birth_date": "1979-04-04",
+    "dni": "59075163P",
+    "email": "patxi.urrutia@hypertech.tech",
+    "password": "312093",
+    "city": "Durango",
+    "iban": "ES43209597276249928435",
+    "assets": 1426.69
+  }
+]
