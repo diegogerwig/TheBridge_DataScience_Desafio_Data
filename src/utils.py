@@ -20,7 +20,7 @@ def get_transaction_city(residence_city, nearby_cities, transaction_type):
             return random.choice(nearby_cities)
         else:
             return fake.city()
-    else:  # Para ingresos
+    else:
         if rand < 0.999:
             return residence_city
         elif nearby_cities:
@@ -95,37 +95,27 @@ def save_to_csv(trxs, filename):
                 trx['balance'] = round(trx['balance'], 2)
             row = {field: trx.get(field, '') for field in fieldnames}
             writer.writerow(row)
-
     return str(filepath.resolve())
 
 
 def calculate_iban_control_digits(bank_code, branch_code, account_number):
     
     iban = f"{bank_code}{branch_code}{account_number}142800"
-    
     iban = ''.join(str(ord(char) - 55) if char.isalpha() else char for char in iban)
-    
     remainder = int(iban) % 97
-    
     control_digits = 98 - remainder
-    
     return f"{control_digits:02d}"
 
 
 def generate_spanish_dni():
     numbers = ''.join([str(random.randint(0, 9)) for _ in range(8)])
-    
     letter_map = "TRWAGMYFPDXBNJZSQVHLCKE"
     control_letter = letter_map[int(numbers) % 23]
-    
     dni = numbers + control_letter
-    
     return dni
 
 
 def generate_password(length):
     digits = '0123456789'
-    
     password = ''.join(random.choice(digits) for _ in range(length))
-    
     return password
