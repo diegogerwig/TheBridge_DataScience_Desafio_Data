@@ -1,0 +1,98 @@
+[
+  {
+    "profile": "buyer_1",
+    "name": "Luis",
+    "surname": "Garay",
+    "birth_date": "1996-08-10",
+    "dni": "20670070Q",
+    "email": "luis.garay@awesomedata.io",
+    "password": "449238",
+    "city": "Bilbao",
+    "iban": "ES57209552411520511223",
+    "assets": 3831.73
+  },
+  {
+    "profile": "buyer_2",
+    "name": "Carmen",
+    "surname": "Lozano",
+    "birth_date": "1984-09-05",
+    "dni": "54021274R",
+    "email": "carmen.lozano@cleverdev.app",
+    "password": "959998",
+    "city": "Zarautz",
+    "iban": "ES63209535234862100767",
+    "assets": 1682.49
+  },
+  {
+    "profile": "buyer_3",
+    "name": "Ana",
+    "surname": "Piñeiro",
+    "birth_date": "1989-08-23",
+    "dni": "43610689K",
+    "email": "ana.piñeiro@awesomenet.io",
+    "password": "074110",
+    "city": "Amurrio",
+    "iban": "ES50209546216055661299",
+    "assets": 7157.03
+  },
+  {
+    "profile": "buyer_4",
+    "name": "Jorge",
+    "surname": "Moreno",
+    "birth_date": "1974-05-23",
+    "dni": "40441389Y",
+    "email": "jorge.moreno@superapp.digital",
+    "password": "216601",
+    "city": "Galdakao",
+    "iban": "ES46209505951516573022",
+    "assets": 5874.73
+  },
+  {
+    "profile": "buyer_5",
+    "name": "Sara",
+    "surname": "Gurrutxaga",
+    "birth_date": "1994-03-12",
+    "dni": "40616649Y",
+    "email": "sara.gurrutxaga@extremecloud.com",
+    "password": "093529",
+    "city": "Donostia",
+    "iban": "ES94209525837524276640",
+    "assets": 1768.53
+  },
+  {
+    "profile": "buyer_6",
+    "name": "Manuel",
+    "surname": "Rodríguez",
+    "birth_date": "1979-02-14",
+    "dni": "27528818A",
+    "email": "manuel.rodríguez@awesomenet.com",
+    "password": "755124",
+    "city": "Vitoria-Gasteiz",
+    "iban": "ES73209503138719377420",
+    "assets": 1500.62
+  },
+  {
+    "profile": "buyer_7",
+    "name": "María",
+    "surname": "Valdec",
+    "birth_date": "1968-12-31",
+    "dni": "54502279F",
+    "email": "maría.valdec@awesomecloud.com",
+    "password": "031005",
+    "city": "Portugalete",
+    "iban": "ES72209544951851809297",
+    "assets": 6307.96
+  },
+  {
+    "profile": "buyer_8",
+    "name": "Antonio",
+    "surname": "Miranda",
+    "birth_date": "1979-04-04",
+    "dni": "90579541K",
+    "email": "antonio.miranda@smartweb.digital",
+    "password": "551483",
+    "city": "Labastida",
+    "iban": "ES06209535008739372467",
+    "assets": 1493.81
+  }
+]

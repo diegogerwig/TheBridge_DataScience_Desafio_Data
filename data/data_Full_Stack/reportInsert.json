@@ -1,0 +1,55 @@
+[
+  {
+    "dni": "20670070Q",
+	"next_salary": 3831.73,
+    "next_water": 12.33,
+	"next_electricity": 3831.73,
+	"next_gas": 3831.73,
+	"next_internet": 3831.73,
+	"next_mobile": 3831.73,
+	"next_insurance": 3831.73,
+	"next_mortgage": 3831.73,
+	"next_loan": 3831.73,
+	"next_investment": 3831.73,
+	"next_savings": 3831.73,
+	"next_pension": 3831.73,
+	"next_taxes": 3831.73,
+	"next_health": 3831.73,
+	"next_transport": 3831.73,
+	"next_food": 3831.73,
+	"next_entertainment": 3831.73,
+	"next_clothing": 3831.73
+  },
+  {
+	"dni": "54021274R",
+	"next_water": 12.33
+  },
+  {
+    "dni": "54021274R",
+    "assets": 1682.49
+  },
+  {
+    "dni": "43610689K",
+    "assets": 7157.03
+  },
+  {
+    "dni": "40441389Y",
+    "assets": 5874.73
+  },
+  {
+    "dni": "40616649Y",
+    "assets": 1768.53
+  },
+  {
+    "dni": "27528818A",
+    "assets": 1500.62
+  },
+  {
+    "dni": "54502279F",
+    "assets": 6307.96
+  },
+  {
+    "dni": "90579541K",
+    "assets": 1493.81
+  }
+]
