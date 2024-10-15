@@ -72,10 +72,13 @@ def process_users(transactions, users):
         income, expenses = analyze_transactions(transactions, dni)
         predicted_income, predicted_expenses = predict_next_month(income, expenses)
         
+        total_expenses = sum(predicted_expenses.values())
+        
         predictions[dni] = {
             "predicted_income": round(predicted_income, 2),
             "predicted_expenses": {k: round(v, 2) for k, v in predicted_expenses.items()},
-            "net_balance": round(predicted_income - sum(predicted_expenses.values()), 2)
+            "total_expenses": round(total_expenses, 2),
+            "net_balance": round(predicted_income - total_expenses, 2)
         }
     
     return predictions
