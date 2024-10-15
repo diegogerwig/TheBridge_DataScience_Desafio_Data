@@ -8,6 +8,7 @@ trx: req
 
 predict: req
 	python3 ./src/prediction_30_days.py
+	python3 ./src/alert_trx.py
 
 api: req
 	docker build -t data_bank_generator .
