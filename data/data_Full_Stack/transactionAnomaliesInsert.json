@@ -1,0 +1,258 @@
+{
+  "20670070Q": {
+    "anomalies": [
+      {
+        "date": "2024-09-23",
+        "type": "expenses",
+        "category": "transport",
+        "amount": 87.0,
+        "average": 66.19126315789475,
+        "difference_percentage": 31.43728620568461
+      },
+      {
+        "date": "2024-09-23",
+        "type": "expenses",
+        "category": "repairs",
+        "amount": 273.88,
+        "average": 174.25249999999997,
+        "difference_percentage": 57.17421557796878
+      },
+      {
+        "date": "2024-09-24",
+        "type": "expenses",
+        "category": "appliances",
+        "amount": 357.17,
+        "average": 219.31545454545454,
+        "difference_percentage": 62.85674018744275
+      },
+      {
+        "date": "2024-09-30",
+        "type": "expenses",
+        "category": "leisure",
+        "amount": 72.58,
+        "average": 49.967401574803155,
+        "difference_percentage": 45.25470149042051
+      },
+      {
+        "date": "2024-10-06",
+        "type": "expenses",
+        "category": "gifts",
+        "amount": 687.02,
+        "average": 445.22950819672127,
+        "difference_percentage": 54.30693324496485
+      }
+    ]
+  },
+  "54021274R": {
+    "anomalies": [
+      {
+        "date": "2024-09-19",
+        "type": "expenses",
+        "category": "leisure",
+        "amount": 74.11,
+        "average": 50.72237704918033,
+        "difference_percentage": 46.10908303477787
+      },
+      {
+        "date": "2024-10-01",
+        "type": "expenses",
+        "category": "children",
+        "amount": 818.35,
+        "average": 468.1812894736843,
+        "difference_percentage": 74.79340127410158
+      },
+      {
+        "date": "2024-10-04",
+        "type": "expenses",
+        "category": "repairs",
+        "amount": 318.77,
+        "average": 182.3177108433735,
+        "difference_percentage": 74.84313428762313
+      }
+    ]
+  },
+  "43610689K": {
+    "anomalies": [
+      {
+        "date": "2024-10-01",
+        "type": "expenses",
+        "category": "healthcare",
+        "amount": 175.22,
+        "average": 124.995,
+        "difference_percentage": 40.18160726429056
+      },
+      {
+        "date": "2024-10-05",
+        "type": "expenses",
+        "category": "electricity",
+        "amount": 300.88,
+        "average": 189.08285714285716,
+        "difference_percentage": 59.12600673929794
+      }
+    ]
+  },
+  "40441389Y": {
+    "anomalies": [
+      {
+        "date": "2024-09-17",
+        "type": "expenses",
+        "category": "leisure",
+        "amount": 63.98,
+        "average": 48.98127118644068,
+        "difference_percentage": 30.621354755103546
+      },
+      {
+        "date": "2024-09-23",
+        "type": "expenses",
+        "category": "children",
+        "amount": 983.04,
+        "average": 710.8992049549549,
+        "difference_percentage": 38.28120683610679
+      },
+      {
+        "date": "2024-09-28",
+        "type": "expenses",
+        "category": "gifts",
+        "amount": 498.07,
+        "average": 362.9215384615385,
+        "difference_percentage": 37.23903026295151
+      },
+      {
+        "date": "2024-10-04",
+        "type": "expenses",
+        "category": "leisure",
+        "amount": 81.06,
+        "average": 48.98127118644068,
+        "difference_percentage": 65.49182582758198
+      },
+      {
+        "date": "2024-10-07",
+        "type": "expenses",
+        "category": "repairs",
+        "amount": 282.37,
+        "average": 181.50285714285715,
+        "difference_percentage": 55.573308566571164
+      }
+    ]
+  },
+  "40616649Y": {
+    "anomalies": [
+      {
+        "date": "2024-09-16",
+        "type": "expenses",
+        "category": "healthcare",
+        "amount": 154.29,
+        "average": 112.5205,
+        "difference_percentage": 37.121680049413214
+      },
+      {
+        "date": "2024-09-20",
+        "type": "expenses",
+        "category": "travel",
+        "amount": 744.27,
+        "average": 549.2641666666667,
+        "difference_percentage": 35.50310491157107
+      }
+    ]
+  },
+  "27528818A": {
+    "anomalies": [
+      {
+        "date": "2024-09-16",
+        "type": "expenses",
+        "category": "appliances",
+        "amount": 355.88,
+        "average": 211.6039285714286,
+        "difference_percentage": 68.1821327243789
+      },
+      {
+        "date": "2024-09-30",
+        "type": "expenses",
+        "category": "healthcare",
+        "amount": 149.37,
+        "average": 109.62431818181821,
+        "difference_percentage": 36.256263644222905
+      }
+    ]
+  },
+  "54502279F": {
+    "anomalies": [
+      {
+        "date": "2024-09-16",
+        "type": "expenses",
+        "category": "repairs",
+        "amount": 247.51,
+        "average": 160.34915492957745,
+        "difference_percentage": 54.35690952577957
+      },
+      {
+        "date": "2024-09-25",
+        "type": "expenses",
+        "category": "children",
+        "amount": 368.68,
+        "average": 211.33821317829458,
+        "difference_percentage": 74.45023048858879
+      },
+      {
+        "date": "2024-09-29",
+        "type": "expenses",
+        "category": "clothing",
+        "amount": 152.02,
+        "average": 105.7136507936508,
+        "difference_percentage": 43.80356638778611
+      },
+      {
+        "date": "2024-09-30",
+        "type": "expenses",
+        "category": "gifts",
+        "amount": 349.86,
+        "average": 151.69372881355932,
+        "difference_percentage": 130.6357703356339
+      },
+      {
+        "date": "2024-10-02",
+        "type": "expenses",
+        "category": "children",
+        "amount": 318.55,
+        "average": 211.33821317829458,
+        "difference_percentage": 50.72995801817283
+      },
+      {
+        "date": "2024-10-03",
+        "type": "expenses",
+        "category": "travel",
+        "amount": 398.89,
+        "average": 294.4653333333334,
+        "difference_percentage": 35.46246530434819
+      },
+      {
+        "date": "2024-10-06",
+        "type": "expenses",
+        "category": "healthcare",
+        "amount": 176.76,
+        "average": 107.8867857142857,
+        "difference_percentage": 63.83841526997549
+      }
+    ]
+  },
+  "90579541K": {
+    "anomalies": [
+      {
+        "date": "2024-10-06",
+        "type": "expenses",
+        "category": "gifts",
+        "amount": 728.25,
+        "average": 464.0288405797101,
+        "difference_percentage": 56.94067616361927
+      },
+      {
+        "date": "2024-10-08",
+        "type": "expenses",
+        "category": "gas",
+        "amount": 182.31,
+        "average": 130.97,
+        "difference_percentage": 39.199816751927926
+      }
+    ]
+  }
+}

@@ -116,7 +116,7 @@ def save_prediction(file_path, prediction):
 
 # Main execution
 script_dir = os.path.dirname(os.path.abspath(__file__))
-output_file = os.path.join(script_dir, 'transactionAnomaliesInsert.json')
+output_file = os.path.join(script_dir, '../data/data_Full_Stack/transactionAnomaliesInsert.json')
 
 try:
     transactions, users = load_data(None, None)
