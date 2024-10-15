@@ -9,3 +9,4 @@ uvicorn
 mpld3
 unidecode
 bcrypt
+scikit-learn
