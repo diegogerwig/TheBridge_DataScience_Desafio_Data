@@ -6,4 +6,31 @@
       "target_date": "2025-06-30",
       "months_left": 8,
       "monthly_saving_needed": 250.0,
-      "is_achievable": 
+      "is_achievable": 1
+    },
+    {
+      "name": "New Laptop",
+      "amount": 1500,
+      "target_date": "2025-12-31",
+      "months_left": 14,
+      "monthly_saving_needed": 107.14,
+      "is_achievable": 1
+    },
+    {
+      "name": "New Car",
+      "amount": 20000,
+      "target_date": "2026-12-31",
+      "months_left": 26,
+      "monthly_saving_needed": 769.23,
+      "is_achievable": 1
+    },
+    {
+      "name": "Down Payment for House",
+      "amount": 50000,
+      "target_date": "2027-12-31",
+      "months_left": 38,
+      "monthly_saving_needed": 1315.79,
+      "is_achievable": 1
+    }
+  ]
+}
