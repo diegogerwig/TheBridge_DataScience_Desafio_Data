@@ -10,6 +10,9 @@ predict: req
 	python3 ./src/prediction_next_month.py
 	python3 ./src/trx_anomalies.py
 
+goals: req
+	python3 ./src/saving_goals.py
+
 api: req
 	docker build -t data_bank_generator .
 	docker run -p 8000:8000 data_bank_generator
