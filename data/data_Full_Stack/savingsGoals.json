@@ -1,0 +1,17 @@
+{
+  "20670070Q": [
+    {"name": "Summer Vacation", "amount": 2000, "target_date": "2025-06-30"},
+    {"name": "New Laptop", "amount": 1500, "target_date": "2025-04-15"}
+  ],
+  "54021274R": [
+    {"name": "Emergency Fund", "amount": 5000, "target_date": "2025-01-01"},
+    {"name": "Home Renovation", "amount": 10000, "target_date": "2026-01-01"}
+  ],
+  "40441389Y": [
+    {"name": "Wedding Expenses", "amount": 8000, "target_date": "2025-06-30"}
+  ],
+  "54502279F": [
+    {"name": "MBA Tuition", "amount": 15000, "target_date": "2027-01-01"},
+    {"name": "World Trip", "amount": 6000, "target_date": "2025-03-31"}
+  ]
+}
