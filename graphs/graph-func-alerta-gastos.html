@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Data Graph</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #f0f0f0; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .graph-container { background-color: #f5f5f5; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); padding: 20px; }
+        .axis { stroke: #666; stroke-width: 1; }
+        .data-line { fill: none; stroke: #999; stroke-width: 3; }
+        .data-point { fill: #2c3e50; }
+        .forecast-line { fill: none; stroke: #2ecc71; stroke-width: 2; stroke-dasharray: 5,5; }
+        .reference-line { stroke: #e0e0e0; stroke-width: 1; }
+        text { font-family: 'Arial', sans-serif; }
+        .title { font-size: 18px; font-weight: bold; }
+        .axis-label { font-size: 14px; fill: #7f8c8d; }
+        .data-label { font-size: 12px; fill: #2c3e50; }
+        .x-label { font-size: 10px; fill: #7f8c8d; }
+        .forecast-label { font-size: 14px; fill: #e74c3c; font-weight: bold; }
+        .alert-line { fill: none; stroke: #e74c3c; stroke-width: 2; stroke-dasharray: 5,5; }
+    </style>
+</head>
+<body>
+    <div class="graph-container">
+        <svg width="800" height="520" viewBox="0 0 800 520">
+            <rect width="800" height="520" fill="#f5f5f5"/>
+            <g id="referenceLines"></g>
+            <line x1="70" y1="420" x2="750" y2="420" class="axis" />
+            <line x1="70" y1="420" x2="70" y2="50" class="axis" />
+            <path id="dataLine" class="data-line" />
+            <path id="forecastLine" class="forecast-line" />
+            <path id="alertLine" class="alert-line" />
+            <g id="dataPoints"></g>
+            <g id="xLabels"></g>
+            <g id="yLabels"></g>
+            <text x="400" y="30" text-anchor="middle" class="title">Monthly Data Trend and Forecast</text>
+            <text x="400" y="510" text-anchor="middle" class="axis-label">Date</text>
+            <text x="20" y="235" text-anchor="middle" transform="rotate(-90, 20, 235)" class="axis-label">Value</text>
+        </svg>
+    </div>
+
+    <script>
+        const data = [
+            {x: '2022-01', y: 61}, {x: '2022-02', y: 59}, {x: '2022-03', y: 54}, {x: '2022-04', y: 49},
+            {x: '2022-05', y: 42}, {x: '2022-06', y: 37}, {x: '2022-07', y: 39}, {x: '2022-08', y: 36},
+            {x: '2022-09', y: 38}, {x: '2022-10', y: 47}, {x: '2022-11', y: 53}, {x: '2022-12', y: 64},
+            {x: '2023-01', y: 66}, {x: '2023-02', y: 63}, {x: '2023-03', y: 52}, {x: '2023-04', y: 53},
+            {x: '2023-05', y: 48}, {x: '2023-06', y: 40}, {x: '2023-07', y: 34}, {x: '2023-08', y: 39},
+            {x: '2023-09', y: 39}, {x: '2023-10', y: 48}, {x: '2023-11', y: 56}, {x: '2023-12', y: 66},
+            {x: '2024-01', y: 64}, {x: '2024-02', y: 65}, {x: '2024-03', y: 56}, {x: '2024-04', y: 51},
+            {x: '2024-05', y: 45}, {x: '2024-06', y: 39}, {x: '2024-07', y: 36}, {x: '2024-08', y: 37},
+            {x: '2024-09', y: 39}
+        ];
+
+        function getYPosition(value) {
+            return 420 - ((value - 20) / 60) * 370;
+        }
+
+        function getXPosition(index) {
+            return 70 + index * 19.5;
+        }
+
+        function createSmoothPath(points) {
+            if (points.length < 2) return '';
+            let path = `M ${points[0].x} ${points[0].y}`;
+            for (let i = 1; i < points.length - 2; i++) {
+                const xc = (points[i].x + points[i + 1].x) / 2;
+                const yc = (points[i].y + points[i + 1].y) / 2;
+                path += ` Q ${points[i].x} ${points[i].y}, ${xc} ${yc}`;
+            }
+            path += ` Q ${points[points.length - 2].x} ${points[points.length - 2].y}, ${points[points.length - 1].x} ${points[points.length - 1].y}`;
+            return path;
+        }
+
+        function exponentialSmoothing(data, alpha) {
+            let forecast = [data[0]];
+            for (let i = 1; i < data.length; i++) {
+                forecast[i] = alpha * data[i] + (1 - alpha) * forecast[i-1];
+            }
+            return forecast;
+        }
+
+        function formatEuro(value) {
+            return value.toFixed(2).replace('.', ',') + ' €';
+        }
+
+        const referenceLines = document.getElementById('referenceLines');
+        const dataPoints = document.getElementById('dataPoints');
+        const xLabels = document.getElementById('xLabels');
+        const yLabels = document.getElementById('yLabels');
+        const dataLine = document.getElementById('dataLine');
+        const forecastLine = document.getElementById('forecastLine');
+        const alertLine = document.getElementById('alertLine');
+
+        // Add horizontal reference lines
+        for (let i = 0; i <= 6; i++) {
+            const y = 50 + i * (370 / 6);
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", "70");
+            line.setAttribute("y1", y.toString());
+            line.setAttribute("x2", "750");
+            line.setAttribute("y2", y.toString());
+            line.setAttribute("class", "reference-line");
+            referenceLines.appendChild(line);
+
+            const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            label.setAttribute("x", "65");
+            label.setAttribute("y", y.toString());
+            label.setAttribute("text-anchor", "end");
+            label.setAttribute("alignment-baseline", "middle");
+            label.setAttribute("class", "data-label");
+            label.textContent = formatEuro(80 - i * 10);
+            yLabels.appendChild(label);
+        }
+
+        // Add vertical reference lines (every 3 months)
+        for (let i = 0; i <= data.length; i += 3) {
+            const x = getXPosition(i);
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", x.toString());
+            line.setAttribute("y1", "50");
+            line.setAttribute("x2", x.toString());
+            line.setAttribute("y2", "420");
+            line.setAttribute("class", "reference-line");
+            referenceLines.appendChild(line);
+        }
+
+        let points = data.map((point, index) => ({
+            x: getXPosition(index),
+            y: getYPosition(point.y)
+        }));
+
+        dataLine.setAttribute('d', createSmoothPath(points));
+
+        // Add alert line (30% above original data)
+        let alertPoints = data.map((point, index) => ({
+            x: getXPosition(index),
+            y: getYPosition(point.y * 1.3)
+        }));
+        alertLine.setAttribute('d', createSmoothPath(alertPoints));
+
+        data.forEach((point, index) => {
+            const x = getXPosition(index);
+            const y = getYPosition(point.y);
+
+            const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            circle.setAttribute("cx", x);
+            circle.setAttribute("cy", y);
+            circle.setAttribute("r", "4");
+            circle.setAttribute("class", "data-point");
+            dataPoints.appendChild(circle);
+
+            if (index % 3 === 0) {
+                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.setAttribute("x", x);
+                text.setAttribute("y", 445);  // Moved up from 465
+                text.setAttribute("text-anchor", "end");
+                text.setAttribute("transform", `rotate(-45, ${x}, 445)`);  // Adjusted rotation point
+                text.setAttribute("class", "x-label");
+                text.textContent = point.x;
+                xLabels.appendChild(text);
+            }
+        });
+
+        // Apply exponential smoothing with adjusted alpha
+        const alpha = 0.5;
+        const yValues = data.map(d => d.y);
+        const smoothedValues = exponentialSmoothing(yValues, alpha);
+
+        // Create forecast line
+        const forecastPoints = smoothedValues.map((value, index) => ({
+            x: getXPosition(index),
+            y: getYPosition(value)
+        }));
+
+        forecastLine.setAttribute('d', createSmoothPath(forecastPoints));
+
+        // Show single month prediction with Y value
+        const predictionValue = alpha * yValues[yValues.length - 1] + (1 - alpha) * smoothedValues[smoothedValues.length - 1];
+        const predX = getXPosition(data.length);
+        const predY = getYPosition(predictionValue);
+
+        const predictionCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        predictionCircle.setAttribute("cx", predX);
+        predictionCircle.setAttribute("cy", predY);
+        predictionCircle.setAttribute("r", "5");
+        predictionCircle.setAttribute("fill", "#e74c3c");
+        dataPoints.appendChild(predictionCircle);
+
+        const predictionLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        predictionLabel.setAttribute("x", predX + 10);
+        predictionLabel.setAttribute("y", predY - 10);
+        predictionLabel.setAttribute("class", "forecast-label");
+        predictionLabel.textContent = formatEuro(predictionValue);
+        dataPoints.appendChild(predictionLabel);
+    </script>
+</body>
+</html>
