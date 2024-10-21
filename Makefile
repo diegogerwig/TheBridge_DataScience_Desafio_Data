@@ -1,10 +1,17 @@
-all: req trx
+all: trx
 
-req:
+req: 
 	pip install -r requirements.txt
 
-trx:
+trx: req
 	python3 ./src/main.py
+
+predict: req
+	python3 ./src/prediction_next_month.py
+	python3 ./src/trx_anomalies.py
+
+goals: req
+	python3 ./src/saving_goals.py
 
 api: req
 	docker build -t data_bank_generator .

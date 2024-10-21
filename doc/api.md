@@ -5,6 +5,11 @@ https://thebridge-datascience-desafio-data.onrender.com/users
 https://thebridge-datascience-desafio-data.onrender.com/transactions?from_date=2024-10-03
 
 
+# Ejemplo de petición usando CURL en la terminal
+
+curl -X GET "https://thebridge-datascience-desafio-data.onrender.com/users"
+
+
 # Ejemplo de petición usando Python requests
 
 import requests
