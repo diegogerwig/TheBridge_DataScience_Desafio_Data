@@ -1,14 +1,14 @@
 # TheBridge_DataScience_Desafio_Data
 
+## API
 
+https://thebridge-datascience-desafio-data.onrender.com/docs
+https://thebridge-datascience-desafio-data.onrender.com/users
+https://thebridge-datascience-desafio-data.onrender.com/transactions?from_date=2024-10-03
 
-## Censo
-- https://www.eustat.eus/elementos/ele0011400/poblacion-por-distritos-y-secciones-censales-de-bizkaia-segun-sexo-grupos-de-edad-y-nacionalidad-1/tbl0011435_c.html
-- https://www.eustat.eus/elementos/ele0011400/poblacion-por-distritos-y-secciones-censales-de-alava-segun-sexo-grupos-de-edad-y-nacionalidad-1/tbl0011433_c.html
-- https://www.eustat.eus/elementos/ele0011400/poblacion-por-distritos-y-secciones-censales-de-gipuzkoa-segun-sexo-grupos-de-edad-y-nacionalidad-1/tbl0011434_c.html
+### Ejemplo de petición usando CURL en la terminal
 
-
-
+curl -X GET "https://thebridge-datascience-desafio-data.onrender.com/users"
 
 
 ## 💪 EQUIPO
